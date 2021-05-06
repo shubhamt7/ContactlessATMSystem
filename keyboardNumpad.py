@@ -1,0 +1,216 @@
+import cv2
+import numpy as np
+
+def keyboardNumpadLayout(frame):
+    x = 50
+    y = 50
+    cv2.rectangle(frame, (x, y), (x + 480, y + 400), (0, 255, 0), 2)
+
+    # 1, 2, 3
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "1", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "2", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "3", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "4", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    # 4, 5, 6
+    y += 120
+
+    x = 50
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "5", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "6", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "7", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "<--", (x + 30, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    # 7, 8, 9
+    y += 120
+    x = 50
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "8", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "9", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "0", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
+    cv2.putText(frame, "Enter", (x + 20, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    x += 120
+
+
+def determineNumpadKey(cx, cy):
+    if cy > 50 and cy < 410 and cx > 50 and cx < 530:
+        # first row  1,2,3,4
+        if cy > 50 and cy < 170:
+            # 1
+            if cx > 50 and cx < 170:
+                return "1"
+            # 2
+            elif cx > 170 and cx < 290:
+                return "2"
+            # 3
+            elif cx > 270 and cx < 410:
+                return "3"
+            # 4
+            else:
+                return "4"
+
+
+        # second row 5,6,7,backspace
+
+        elif cy > 170 and cy < 290:
+            # 5
+            if cx > 50 and cx < 170:
+                return "5"
+
+            # 6
+            elif cx > 170 and cx < 290:
+                return "6"
+
+            # 7
+            elif cx > 290 and cx < 410:
+                return "7"
+
+            # Backspace
+            else:
+                return "B"
+
+
+        # third row 8,9,0, Enter
+        elif cy > 290 and cy < 410:
+
+            # 8
+            if cx > 50 and cx < 170:
+                return "8"
+
+            # 9
+            elif cx > 170 and cx < 290:
+                return "9"
+
+            # 0
+            elif cx > 290 and cx < 410:
+                return "0"
+
+            # Enter
+            else:
+                return "E"
+
+        else:
+            return ""
+
+    else:
+        return ""
+
+
+def getNumber(message=""):
+    cap = cv2.VideoCapture(0)
+    count = 0
+
+    result = ""
+    while (1):
+
+        ## Read the image
+        ret, frame = cap.read()
+        ## Do the processing
+        frame = cv2.flip(frame, 1)
+        cv2.putText(frame, message, (50, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
+        cv2.putText(frame, "You entered: " + result, (50, 440), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
+
+        global cx
+        global cy
+        global old_area, new_area
+        old_area, new_area = 0, 0
+        # for yellow color idenitfiaction in frame
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        lower_yellow = np.array([14, 141, 140])  # change this hsv values if yellow color as per your lighting condition
+        upper_yellow = np.array([84, 255, 255])  # same as above
+
+        mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        blur = cv2.medianBlur(mask, 15)
+        blur = cv2.GaussianBlur(blur, (5, 5), 0)
+        thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+        cv2.imshow("mask", mask)
+        # find contours in frame
+        contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        # function to determine which key is pressed based on the center of the contour(yellow paper)
+
+        cv2.drawContours(frame, contours, -1, (0, 255, 0), 2)
+
+        if len(contours) > 0:
+            cnt = max(contours, key=cv2.contourArea)
+            if (cv2.contourArea(cnt) > 600 and cv2.contourArea(cnt) < 1200):
+
+                M = cv2.moments(cnt)
+
+                cx = int(M['m10'] / M['m00'])
+                cy = int(M['m01'] / M['m00'])
+                # print ("Centroid = ", cx, ", ", cy)
+                new_area = cv2.contourArea(cnt)
+                # print("new area ",new_area)
+                cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
+                if count == 0:
+                    old_area = new_area
+                    # print("in count==0   ",count)
+
+                count = count + 1
+                # print(count)
+                if count == 20:
+                    count = 0
+                    diff_area = new_area - old_area
+                    if diff_area > 500 and diff_area < 1200:
+                        # print("diff- ",diff_area)
+                        subs = determineNumpadKey(cx, cy)
+                        if (subs == ""):
+                            pass
+                        elif subs == "B":
+                            if (result == ""):
+                                pass
+                            else:
+                                result = result[:-1]
+
+                        elif subs == "E":
+                            break
+
+                        else:
+                            result += subs
+
+                            # display the keyboard in the screen
+
+        keyboardNumpadLayout(frame)
+        cv2.imshow('image', frame)
+        if cv2.waitKey(1) == 27:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+    return result
+
