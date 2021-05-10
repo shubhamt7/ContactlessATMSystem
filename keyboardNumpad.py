@@ -1,11 +1,13 @@
 import cv2
 import numpy as np
 
+from keyboardConfirmation import getConfirmation
+
+
 def keyboardNumpadLayout(frame):
     x = 50
     y = 50
     cv2.rectangle(frame, (x, y), (x + 480, y + 400), (0, 255, 0), 2)
-
     # 1, 2, 3
 
     cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
@@ -61,7 +63,13 @@ def keyboardNumpadLayout(frame):
 
     cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
     cv2.putText(frame, "Enter", (x + 20, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    x += 120
+
+    x = 550
+    y = 0
+
+    cv2.rectangle(frame, (x, y), (x + 80, y + 50), (0, 0, 255), 2)
+    cv2.putText(frame, "Quit", (x + 10, y + 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
 
 
 def determineNumpadKey(cx, cy):
@@ -124,6 +132,9 @@ def determineNumpadKey(cx, cy):
         else:
             return ""
 
+    elif cx > 550 and cx < 630 and cy > 0 and cy < 50:
+        return "quit"
+
     else:
         return ""
 
@@ -135,9 +146,7 @@ def getNumber(message=""):
     result = ""
     while (1):
 
-        ## Read the image
         ret, frame = cap.read()
-        ## Do the processing
         frame = cv2.flip(frame, 1)
         cv2.putText(frame, message, (50, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
         cv2.putText(frame, "You entered: " + result, (50, 440), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
@@ -146,21 +155,16 @@ def getNumber(message=""):
         global cy
         global old_area, new_area
         old_area, new_area = 0, 0
-        # for yellow color idenitfiaction in frame
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        lower_yellow = np.array([14, 141, 140])  # change this hsv values if yellow color as per your lighting condition
-        upper_yellow = np.array([84, 255, 255])  # same as above
+        lower_yellow = np.array([14, 141, 140])
+        upper_yellow = np.array([84, 255, 255])
 
         mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
         blur = cv2.medianBlur(mask, 15)
         blur = cv2.GaussianBlur(blur, (5, 5), 0)
         thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-        cv2.imshow("mask", mask)
-        # find contours in frame
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        # function to determine which key is pressed based on the center of the contour(yellow paper)
 
         cv2.drawContours(frame, contours, -1, (0, 255, 0), 2)
 
@@ -169,26 +173,21 @@ def getNumber(message=""):
             if (cv2.contourArea(cnt) > 600 and cv2.contourArea(cnt) < 1200):
 
                 M = cv2.moments(cnt)
-
                 cx = int(M['m10'] / M['m00'])
                 cy = int(M['m01'] / M['m00'])
-                # print ("Centroid = ", cx, ", ", cy)
                 new_area = cv2.contourArea(cnt)
-                # print("new area ",new_area)
                 cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
                 if count == 0:
                     old_area = new_area
-                    # print("in count==0   ",count)
-
                 count = count + 1
-                # print(count)
                 if count == 20:
                     count = 0
                     diff_area = new_area - old_area
                     if diff_area > 500 and diff_area < 1200:
-                        # print("diff- ",diff_area)
                         subs = determineNumpadKey(cx, cy)
-                        if (subs == ""):
+                        if(subs == "quit"):
+                            exit(0)
+                        elif (subs == ""):
                             pass
                         elif subs == "B":
                             if (result == ""):
@@ -202,10 +201,8 @@ def getNumber(message=""):
                         else:
                             result += subs
 
-                            # display the keyboard in the screen
-
         keyboardNumpadLayout(frame)
-        cv2.imshow('image', frame)
+        cv2.imshow('Contactless ATM System', frame)
         if cv2.waitKey(1) == 27:
             break
 

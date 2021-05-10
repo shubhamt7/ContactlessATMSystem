@@ -1,4 +1,5 @@
 import pandas as pd
+import cv2
 from keyboardNumpad import getNumber
 
 # Authentication
@@ -6,16 +7,11 @@ def authenticate():
     try:
         data = pd.read_csv('atmData.csv')
         ac = getNumber("Enter 6 digit Account number")
-
-        while len(ac) != 6:
-            ac = getNumber("Enter 6 digit Account number")
-
-        person = data[data['ac'] == int(ac)]
-
-        if (len(person) == 0):
+        if (len(ac) == 0 or len(ac) < 6):
             return "WAC"  # wrong acc number
 
-        correctPin = int(person['pin'])
+        user = data[data['ac'] == int(ac)]
+        correctPin = int(user['pin'])
 
         pin = getNumber("Enter 4 digit PIN number")
 
