@@ -206,6 +206,8 @@ def getNumber(message=""):
                         else:
                             result += subs
 
+
+
         keyboardNumpadLayout(frame, message)
         cv2.imshow('Contactless ATM System', frame)
         if cv2.waitKey(1) == 27:

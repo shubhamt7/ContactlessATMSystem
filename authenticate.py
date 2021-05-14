@@ -10,18 +10,15 @@ def authenticate():
         user = data[data['ac'] == int(ac)]
 
         while(len(user) == 0 or len(ac) < 6):
-            return "WAC"  # wrong acc number
-
+            ac = getNumber("Wrong A/C No, Try again")
+            user = data[data['ac'] == int(ac)]
 
         correctPin = int(user['pin'])
 
         pin = getNumber("Enter 4 digit PIN number")
 
-        while len(pin) != 4:
-            pin = getNumber("Enter 4 digit PIN number")
-
-        if (int(pin) != correctPin):
-            return "WPIN"
+        while len(pin) != 4 or (int(pin) != correctPin):
+            pin = getNumber("Wrong PIN! Try again")
 
         return ac  # ok
 

@@ -115,7 +115,6 @@ def getAction():
                         else:
                             result += subs
                             break
-                        # cv2.putText(frame, "Enter name: " + result, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
         keyboardActionLayout(frame)
         cv2.imshow('Contactless ATM System', frame)
