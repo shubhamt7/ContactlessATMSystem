@@ -155,8 +155,8 @@ def getNumber(message=""):
 
         global cx
         global cy
-        global old_area, new_area
-        old_area, new_area = 0, 0
+        # global old_area, new_area
+        # old_area, new_area = 0, 0
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         lower_yellow = np.array([14, 141, 140])
         upper_yellow = np.array([84, 255, 255])
@@ -179,34 +179,55 @@ def getNumber(message=""):
                 cy = int(M['m01'] / M['m00'])
                 new_area = cv2.contourArea(cnt)
                 cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
-                if count == 0:
-                    old_area = new_area
+                # if count == 0:
+                #     old_area = new_area
+                # count = count + 1
+                # if count == 20:
+                #     count = 0
+                #     diff_area = new_area - old_area
+                #     if diff_area > 500 and diff_area < 1200:
+                #         subs = determineNumpadKey(cx, cy)
+                #         if(subs == "quit"):
+                #             exit(0)
+                #         elif (subs == ""):
+                #             pass
+                #         elif subs == "backspace":
+                #             if (result == ""):
+                #                 pass
+                #             else:
+                #                 result = result[:-1]
+                #
+                #         elif subs == "enter":
+                #             if(result == ""):
+                #                 pass
+                #             else:
+                #                 break
+                #
+                #         else:
+                #             result += subs
+
                 count = count + 1
                 if count == 20:
                     count = 0
-                    diff_area = new_area - old_area
-                    if diff_area > 500 and diff_area < 1200:
-                        subs = determineNumpadKey(cx, cy)
-                        if(subs == "quit"):
-                            exit(0)
-                        elif (subs == ""):
+                    subs = determineNumpadKey(cx, cy)
+                    if(subs == "quit"):
+                        exit(0)
+                    elif (subs == ""):
+                        pass
+                    elif subs == "backspace":
+                        if (result == ""):
                             pass
-                        elif subs == "backspace":
-                            if (result == ""):
-                                pass
-                            else:
-                                result = result[:-1]
-
-                        elif subs == "enter":
-                            if(result == ""):
-                                pass
-                            else:
-                                break
-
                         else:
-                            result += subs
+                            result = result[:-1]
 
+                    elif subs == "enter":
+                        if(result == ""):
+                            pass
+                        else:
+                            break
 
+                    else:
+                        result += subs
 
         keyboardNumpadLayout(frame, message)
         cv2.imshow('Contactless ATM System', frame)

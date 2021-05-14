@@ -15,7 +15,6 @@ def runActions(authResult):
     action = getAction()
 
     actionConfirmation = getConfirmation(action + "-action")
-
     while (actionConfirmation != "confirm"):
         action = getAction()
         actionConfirmation = getConfirmation(action + "-action")

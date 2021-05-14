@@ -48,8 +48,8 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
 
         global cx
         global cy
-        global old_area, new_area
-        old_area, new_area = 0, 0
+        # global old_area, new_area
+        # old_area, new_area = 0, 0
 
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         lower_yellow = np.array([14, 141, 140])
@@ -75,20 +75,30 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
 
                 new_area = cv2.contourArea(cnt)
                 cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
-                if count == 0:
-                    old_area = new_area
+                # if count == 0:
+                #     old_area = new_area
+                #
+                # count = count + 1
+                # if count == 20:
+                #     count = 0
+                #     diff_area = new_area - old_area
+                #     if diff_area > 500 and diff_area < 1200:
+                #         subs = determineKey(cx, cy)
+                #         if (subs == ""):
+                #             pass
+                #         else:
+                #             result += subs
+                #             break
 
                 count = count + 1
                 if count == 20:
                     count = 0
-                    diff_area = new_area - old_area
-                    if diff_area > 500 and diff_area < 1200:
-                        subs = determineKey(cx, cy)
-                        if (subs == ""):
-                            pass
-                        else:
-                            result += subs
-                            break
+                    subs = determineKey(cx, cy)
+                    if (subs == ""):
+                        pass
+                    else:
+                        result += subs
+                        break
 
 
 
