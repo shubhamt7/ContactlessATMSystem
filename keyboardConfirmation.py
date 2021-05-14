@@ -1,14 +1,22 @@
 import cv2
 import numpy as np
 
+from colors import red, green, white, black
+
+# black = (0, 0, 0)
+# white = (255, 255, 255)
+# green = (0, 200, 0)
+# red = (0, 0, 200)
+# blue = (255, 0, 0)
+
 def keyboardConfirmationLayout(frame):
 
     x = 20
     y = 50
-    cv2.rectangle(frame, (x, y), (x + 600, y + 100), (255, 255, 255), 2)
+    cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
     x += 70
-    cv2.rectangle(frame, (x, y + 200), (x + 200, y + 350), (255, 255, 255), 2)
-    cv2.rectangle(frame, (x + 250, y + 200), (x + 450, y + 350), (255, 255, 255), 2)
+    cv2.rectangle(frame, (x, y + 200), (x + 200, y + 350), green, 2)
+    cv2.rectangle(frame, (x + 250, y + 200), (x + 450, y + 350), red, 2)
 
 def determineConfirmationKey(cx, cy):
     if cy > 250 and cy < 400:
@@ -27,20 +35,20 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
     if type == "withdraw":
         message1 = "Hello " + name + "!, " + "You are about"
         message2 = "to withdraw " + str(amount) + " out of " + str(balance)
-        cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 3)
-        cv2.putText(frame, message2, (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 3)
-        cv2.putText(frame, "Confirm", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-        cv2.putText(frame, "Cancel", (400, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+        cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, message2, (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, "CONFIRM", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
+        cv2.putText(frame, "CANCEL", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
     elif type == "transfer":
         message1 = "Hello " + name + "!, " + "You are about"
         message2 = "to transfer " + str(amount) + " out of " + str(balance)
         message3 = "to " + recipient
-        cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 3)
-        cv2.putText(frame, message2, (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 3)
-        cv2.putText(frame, message3, (50, 160), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 3)
-        cv2.putText(frame, "Confirm", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-        cv2.putText(frame, "Cancel", (400, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+        cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, message2, (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, message3, (50, 160), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, "CONFIRM", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
+        cv2.putText(frame, "CANCEL", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
 
     # action confirmation
     else:
@@ -55,11 +63,11 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
 
         message2 = "or perform any other action"
 
-        cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 3)
-        cv2.putText(frame, message2, (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 3)
-        cv2.putText(frame, "Yes", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-        cv2.putText(frame, "Change", (350, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-        cv2.putText(frame, "action", (350, 370), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+        cv2.putText(frame, message1, (50, 110), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, message2, (50, 145), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, "CONTINUE", (110, 330), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
+        cv2.putText(frame, "CHANGE", (370, 320), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
+        cv2.putText(frame, "ACTION", (370, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
 
 
 

@@ -1,17 +1,23 @@
 import cv2
 import numpy as np
 
-def keyboardHomepageLayout(frame):
+from colors import red, green, white, black, blue
+
+def keyboardHomepageLayout(frame, message = ""):
 
     x = 20
     y = 50
-    cv2.rectangle(frame, (x, y), (x + 600, y + 100), (255, 255, 255), 2)
+    cv2.rectangle(frame, (x, y), (x + 600, y + 120), black, 2)
+    cv2.rectangle(frame, (x + 10, y + 10), (x + 590, y + 110), black, 2)
+    cv2.putText(frame, message, (50, 120), cv2.FONT_HERSHEY_SIMPLEX, 1.2, white, 2)
+
 
     x += 70
-    cv2.rectangle(frame, (x, y + 200), (x + 200, y + 350), (255, 255, 255), 2)
-    cv2.rectangle(frame, (x + 250, y + 200), (x + 450, y + 350), (255, 255, 255), 2)
-    cv2.putText(frame, "ENTER", (140, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-    cv2.putText(frame, "EXIT", (400, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+    cv2.rectangle(frame, (x, y + 200), (x + 200, y + 350), green, 2)
+    cv2.rectangle(frame, (x + 250, y + 200), (x + 450, y + 350), red, 2)
+
+    cv2.putText(frame, "ENTER", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1.4, green, 2)
+    cv2.putText(frame, "EXIT", (390, 340), cv2.FONT_HERSHEY_SIMPLEX, 1.4, red, 2)
 
 
 def determineKey(cx, cy):
@@ -35,9 +41,6 @@ def getHomepageKey(message=""):
 
         ret, frame = cap.read()
         frame = cv2.flip(frame, 1)
-
-        cv2.putText(frame, message, (50, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
-        # cv2.putText(frame, "ENTER", (235, 340), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 255), 3)
 
         global cx
         global cy
@@ -83,7 +86,7 @@ def getHomepageKey(message=""):
                             result += subs
                             break
 
-        keyboardHomepageLayout(frame)
+        keyboardHomepageLayout(frame, message)
         cv2.imshow('Contactless ATM System', frame)
         if cv2.waitKey(1) == 27:
             break

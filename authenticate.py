@@ -7,10 +7,12 @@ def authenticate():
     try:
         data = pd.read_csv('atmData.csv')
         ac = getNumber("Enter 6 digit Account number")
-        if (len(ac) == 0 or len(ac) < 6):
+        user = data[data['ac'] == int(ac)]
+
+        while(len(user) == 0 or len(ac) < 6):
             return "WAC"  # wrong acc number
 
-        user = data[data['ac'] == int(ac)]
+
         correctPin = int(user['pin'])
 
         pin = getNumber("Enter 4 digit PIN number")

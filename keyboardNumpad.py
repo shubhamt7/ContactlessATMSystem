@@ -1,68 +1,71 @@
 import cv2
 import numpy as np
+from colors import red, green, white, black, blue
 
-from keyboardConfirmation import getConfirmation
-
-
-def keyboardNumpadLayout(frame):
+def keyboardNumpadLayout(frame, message):
     x = 50
-    y = 50
-    cv2.rectangle(frame, (x, y), (x + 480, y + 400), (0, 255, 0), 2)
+    y = 60
+
+    cv2.rectangle(frame, (x, 10), (x + 480, 50), black, 2)
+    cv2.putText(frame, message, (52, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+    cv2.rectangle(frame, (x, y), (x + 480, y + 400), black, 2)
+
+
     # 1, 2, 3
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "1", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "1", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "2", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "2", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "3", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "3", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "4", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "4", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
     # 4, 5, 6
     y += 120
 
     x = 50
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "5", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "5", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "6", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "6", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "7", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "7", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "<--", (x + 30, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "DEL", (x + 30, y + 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, red, 2)
     x += 120
 
     # 7, 8, 9
     y += 120
     x = 50
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "8", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "8", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "9", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "9", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "0", (x + 40, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "0", (x + 40, y + 80), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, white, 2)
     x += 120
 
-    cv2.rectangle(frame, (x, y), (x + 120, y + 120), (0, 255, 0), 2)
-    cv2.putText(frame, "Enter", (x + 20, y + 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
+    cv2.putText(frame, "ENTER", (x + 20, y + 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, green, 2)
 
     x = 550
     y = 0
@@ -107,7 +110,7 @@ def determineNumpadKey(cx, cy):
 
             # Backspace
             else:
-                return "B"
+                return "backspace"
 
 
         # third row 8,9,0, Enter
@@ -127,7 +130,7 @@ def determineNumpadKey(cx, cy):
 
             # Enter
             else:
-                return "E"
+                return "enter"
 
         else:
             return ""
@@ -148,8 +151,7 @@ def getNumber(message=""):
 
         ret, frame = cap.read()
         frame = cv2.flip(frame, 1)
-        cv2.putText(frame, message, (50, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
-        cv2.putText(frame, "You entered: " + result, (50, 440), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
+        cv2.putText(frame, "You entered: " + result, (55, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
 
         global cx
         global cy
@@ -166,7 +168,7 @@ def getNumber(message=""):
 
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        cv2.drawContours(frame, contours, -1, (0, 255, 0), 2)
+        cv2.drawContours(frame, contours, -1, green, 2)
 
         if len(contours) > 0:
             cnt = max(contours, key=cv2.contourArea)
@@ -189,19 +191,22 @@ def getNumber(message=""):
                             exit(0)
                         elif (subs == ""):
                             pass
-                        elif subs == "B":
+                        elif subs == "backspace":
                             if (result == ""):
                                 pass
                             else:
                                 result = result[:-1]
 
-                        elif subs == "E":
-                            break
+                        elif subs == "enter":
+                            if(result == ""):
+                                pass
+                            else:
+                                break
 
                         else:
                             result += subs
 
-        keyboardNumpadLayout(frame)
+        keyboardNumpadLayout(frame, message)
         cv2.imshow('Contactless ATM System', frame)
         if cv2.waitKey(1) == 27:
             break

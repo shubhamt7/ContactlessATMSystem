@@ -6,6 +6,7 @@ from keyboardActionChoice import getAction
 from authenticate import authenticate
 
 
+
 def runCATM(message=""):
     try:
         entryPageInput = getHomepageKey(message)
@@ -61,11 +62,21 @@ def runCATM(message=""):
                 elif (action == "transfer"):
 
                     data = pd.read_csv('atmData.csv')
+
+                    # ac = getNumber("Enter 6 digit Account number")
+                    # user = data[data['ac'] == int(ac)]
+                    #
+                    # while (len(user) == 0 or len(ac) < 6):
+                    #     return "WAC"  # wrong acc number
+
                     transfer_to = getNumber("Enter A/C no of recipient")
                     recipient = data[data['ac'] == int(transfer_to)]
 
-                    if (len(transfer_to) == 0 or len(transfer_to) < 6):
-                        return "WAC"  # wrong acc number
+                    while(len(recipient) == 0 or len(transfer_to) < 6):
+                        transfer_to = getNumber("Invalid recipient, try again.")
+
+                    while(int(transfer_to) == ac_no):
+                        transfer_to = getNumber("Can't transfer to own account")
 
                     currUserBalance = int(person['balance'])
 
@@ -73,8 +84,13 @@ def runCATM(message=""):
                     while (amount > currUserBalance):
                         amount = int(getNumber("Not enough money, enter again"))
 
+                    while (amount == 0):
+                        amount = int(getNumber("Amount can't be zero"))
+
                     recipientBalance = int(recipient['balance'])
                     recipientName = str(recipient['name'].values[0])
+
+
                     confirmationMessage = getConfirmation("transfer", name, amount, currUserBalance, recipientName)
 
                     if (confirmationMessage == "confirm"):
@@ -95,11 +111,21 @@ def runCATM(message=""):
         print(e)
 
 try:
-    runCATM("Welcome to CATM system")
+    runCATM("Welcome to Contactless ATM")
 except Exception as e:
     print(e)
 
 # try:
+#     getConfirmation('transfer')
+# except Exception as e:
+#     print(e)
+#
+# try:
 #     getAction()
-# except:
-#     print('error')
+# except Exception as e:
+#     print(e)
+
+# try:
+#     getNumber("Enter something")
+# except Exception as e:
+#     print(e)
