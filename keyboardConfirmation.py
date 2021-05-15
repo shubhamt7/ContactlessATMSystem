@@ -11,19 +11,17 @@ from colors import red, green, white, black
 
 def keyboardConfirmationLayout(frame):
 
-    x = 20
+    x = 90
     y = 50
-    cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
-    x += 70
     cv2.rectangle(frame, (x, y + 200), (x + 200, y + 350), green, 2)
     cv2.rectangle(frame, (x + 250, y + 200), (x + 450, y + 350), red, 2)
 
 def determineConfirmationKey(cx, cy):
     if cy > 250 and cy < 400:
         if cx > 90 and cx < 290:
-            return "confirm"
+            return "choice1"
         elif cx > 340 and cx < 540:
-            return "cancel"
+            return "choice2"
         else:
             return ""
 
@@ -32,7 +30,11 @@ def determineConfirmationKey(cx, cy):
 
 def displayDetails(frame, type, name = "", amount = "", balance = "", recipient = ""):
 
+    x = 20
+    y = 50
+
     if type == "withdraw":
+        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
         message1 = "Hello " + name + "!, " + "You are about"
         message2 = "to withdraw " + str(amount) + " out of " + str(balance)
         cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
@@ -41,6 +43,7 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
         cv2.putText(frame, "CANCEL", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
     elif type == "transfer":
+        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
         message1 = "Hello " + name + "!, " + "You are about"
         message2 = "to transfer " + str(amount) + " out of " + str(balance)
         message3 = "to " + recipient
@@ -52,6 +55,7 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
 
     # action confirmation
     else:
+        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
         if type == "withdraw-action":
             message1 = "Continue with withdrawing money"
         elif type == "transfer-action":
@@ -81,8 +85,10 @@ def getConfirmation(type, name = "",amount = "", balance = "", recipient = ""):
         ret, frame = cap.read()
         frame = cv2.flip(frame, 1)
 
-        if(type == "quit"):
+        if(type == "instructions"):
             displayDetails(frame, type)
+        # elif(type == "quit"):
+        #     displayDetails(frame, type)
         elif(type == "withdraw"):
             displayDetails(frame, type, name, amount, balance)
         else:
@@ -112,22 +118,7 @@ def getConfirmation(type, name = "",amount = "", balance = "", recipient = ""):
 
                 cx = int(M['m10'] / M['m00'])
                 cy = int(M['m01'] / M['m00'])
-                new_area = cv2.contourArea(cnt)
                 cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
-                # if count == 0:
-                #     old_area = new_area
-                #
-                # count = count + 1
-                # if count == 20:
-                #     count = 0
-                #     diff_area = new_area - old_area
-                #     if diff_area > 500 and diff_area < 1200:
-                #         subs = determineConfirmationKey(cx, cy)
-                #         if (subs == ""):
-                #             pass
-                #         else:
-                #             result += subs
-                #             break
 
                 count = count + 1
                 if count == 20:

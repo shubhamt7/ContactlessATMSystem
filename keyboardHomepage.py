@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from colors import red, green, white, black, blue
+from colors import red, green, white, black
 
 def keyboardHomepageLayout(frame, message, loggedIn, fontSize):
 
@@ -37,10 +37,11 @@ def determineKey(cx, cy):
 
 
 def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
+
     cap = cv2.VideoCapture(0)
     count = 0
-
     result = ""
+
     while (1):
 
         ret, frame = cap.read()
@@ -48,8 +49,6 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
 
         global cx
         global cy
-        # global old_area, new_area
-        # old_area, new_area = 0, 0
 
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         lower_yellow = np.array([14, 141, 140])
@@ -73,22 +72,7 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
                 cx = int(M['m10'] / M['m00'])
                 cy = int(M['m01'] / M['m00'])
 
-                new_area = cv2.contourArea(cnt)
                 cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
-                # if count == 0:
-                #     old_area = new_area
-                #
-                # count = count + 1
-                # if count == 20:
-                #     count = 0
-                #     diff_area = new_area - old_area
-                #     if diff_area > 500 and diff_area < 1200:
-                #         subs = determineKey(cx, cy)
-                #         if (subs == ""):
-                #             pass
-                #         else:
-                #             result += subs
-                #             break
 
                 count = count + 1
                 if count == 20:
@@ -99,8 +83,6 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
                     else:
                         result += subs
                         break
-
-
 
         keyboardHomepageLayout(frame, message, loggedIn, fontSize)
         cv2.imshow('Contactless ATM System', frame)

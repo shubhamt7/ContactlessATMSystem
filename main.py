@@ -4,6 +4,7 @@ from keyboardHomepage import getHomepageKey
 from keyboardConfirmation import getConfirmation
 from keyboardActionChoice import getAction
 from authenticate import authenticate
+from instructionsPage import showInstructions
 
 def runActions(authResult):
 
@@ -15,7 +16,7 @@ def runActions(authResult):
     action = getAction()
 
     actionConfirmation = getConfirmation(action + "-action")
-    while (actionConfirmation != "confirm"):
+    while (actionConfirmation != "choice1"):
         action = getAction()
         actionConfirmation = getConfirmation(action + "-action")
 
@@ -27,12 +28,12 @@ def runActions(authResult):
             amount = int(getNumber("Not enough money, enter again"))
 
         confirmationMessage = getConfirmation("withdraw", name, amount, balance)
-        if (confirmationMessage == "confirm"):
+        if (confirmationMessage == "choice1"):
             newBalance = balance - amount
             data.loc[data['ac'] == ac_no, 'balance'] = newBalance
             data.to_csv('atmData.csv', index=False)
 
-            runCATM("Successfull", authResult)
+            runCATM("Successfully withdrawn", authResult)
         else:
             runCATM("Transaction cancelled", authResult)
 
@@ -71,14 +72,14 @@ def runActions(authResult):
 
         confirmationMessage = getConfirmation("transfer", name, amount, currUserBalance, recipientName)
 
-        if (confirmationMessage == "confirm"):
+        if (confirmationMessage == "choice1"):
             currUserBalance = currUserBalance - amount
             recipientBalance = recipientBalance + amount
             data.loc[data['ac'] == ac_no, 'balance'] = currUserBalance
             data.loc[data['ac'] == int(transfer_to), 'balance'] = recipientBalance
             data.to_csv('atmData.csv', index=False)
 
-            runCATM("Successfull", authResult)
+            runCATM("Successfully Transferred", authResult)
         else:
             runCATM("Transaction cancelled", authResult)
 
@@ -89,8 +90,10 @@ def runActions(authResult):
 
 def runCATM(message="", accountNo = "", fontSize = 1.2):
     try:
+
         if(accountNo == ""):
             loggedIn = False
+            # showInstructions()
         else:
             loggedIn = True
 
@@ -116,18 +119,14 @@ try:
 except Exception as e:
     print(e)
 
+
 # try:
-#     getConfirmation('transfer')
-# except Exception as e:
-#     print(e)
-#
-# try:
-#     getAction()
+#     showInstructions()
 # except Exception as e:
 #     print(e)
 
 # try:
-#     getNumber("Enter something")
+#     print(getNumber("Enter something"))
 # except Exception as e:
 #     print(e)
 #
@@ -135,3 +134,8 @@ except Exception as e:
 #     getHomepageKey(message = "Welcome to CATM System", loggedIn = True)
 # except:
 #     print("Error")
+
+# try:
+#     authenticate()
+# except Exception as e:
+#     print(e)

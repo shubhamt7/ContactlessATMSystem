@@ -1,6 +1,7 @@
 import pandas as pd
 import cv2
 from keyboardNumpad import getNumber
+from screenshot import clickScreenshot
 
 # Authentication
 def authenticate():
@@ -20,6 +21,8 @@ def authenticate():
         while len(pin) != 4 or (int(pin) != correctPin):
             pin = getNumber("Wrong PIN! Try again")
 
+        name = str(user['name'].values[0])
+        clickScreenshot(name, ac)
         return ac  # ok
 
     except Exception as e:

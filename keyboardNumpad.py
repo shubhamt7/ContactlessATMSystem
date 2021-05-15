@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
-from colors import red, green, white, black, blue
+from colors import red, green, white, black
+
 
 def keyboardNumpadLayout(frame, message):
     x = 50
@@ -9,7 +10,6 @@ def keyboardNumpadLayout(frame, message):
     cv2.rectangle(frame, (x, 10), (x + 480, 50), black, 2)
     cv2.putText(frame, message, (52, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
     cv2.rectangle(frame, (x, y), (x + 480, y + 400), black, 2)
-
 
     # 1, 2, 3
 
@@ -72,7 +72,6 @@ def keyboardNumpadLayout(frame, message):
 
     cv2.rectangle(frame, (x, y), (x + 80, y + 50), (0, 0, 255), 2)
     cv2.putText(frame, "Quit", (x + 10, y + 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-
 
 
 def determineNumpadKey(cx, cy):
@@ -177,34 +176,8 @@ def getNumber(message=""):
                 M = cv2.moments(cnt)
                 cx = int(M['m10'] / M['m00'])
                 cy = int(M['m01'] / M['m00'])
-                new_area = cv2.contourArea(cnt)
+
                 cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
-                # if count == 0:
-                #     old_area = new_area
-                # count = count + 1
-                # if count == 20:
-                #     count = 0
-                #     diff_area = new_area - old_area
-                #     if diff_area > 500 and diff_area < 1200:
-                #         subs = determineNumpadKey(cx, cy)
-                #         if(subs == "quit"):
-                #             exit(0)
-                #         elif (subs == ""):
-                #             pass
-                #         elif subs == "backspace":
-                #             if (result == ""):
-                #                 pass
-                #             else:
-                #                 result = result[:-1]
-                #
-                #         elif subs == "enter":
-                #             if(result == ""):
-                #                 pass
-                #             else:
-                #                 break
-                #
-                #         else:
-                #             result += subs
 
                 count = count + 1
                 if count == 20:
@@ -227,7 +200,8 @@ def getNumber(message=""):
                             break
 
                     else:
-                        result += subs
+                        if(len(result) != 12):
+                            result += subs
 
         keyboardNumpadLayout(frame, message)
         cv2.imshow('Contactless ATM System', frame)

@@ -47,14 +47,14 @@ def keyboardActionLayout(frame):
 
 def determineAction(cx, cy):
 
-    if cy > 150 and cy < 300:
+    if cy > 130 and cy < 280:
         if cx > 120 and cx < 320:
             return "withdraw"
         elif cx > 320 and cx < 520:
             return "balance"
         else:
             return ""
-    elif cy > 250 and cy < 400:
+    elif cy > 280 and cy < 430:
         if cx > 120 and cx < 320:
             return "transfer"
         elif cx > 320 and cx < 520:
@@ -100,23 +100,7 @@ def getAction():
                 cx = int(M['m10'] / M['m00'])
                 cy = int(M['m01'] / M['m00'])
 
-                new_area = cv2.contourArea(cnt)
                 cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
-                # if count == 0:
-                #     old_area = new_area
-                # count = count + 1
-                # if count == 20:
-                #     count = 0
-                #     diff_area = new_area - old_area
-                #     if diff_area > 500 and diff_area < 1200:
-                #         subs = determineAction(cx, cy)
-                #         if (subs == ""):
-                #             pass
-                #         else:
-                #             result += subs
-                #             break
-
-
                 count = count + 1
                 if count == 20:
                     count = 0
