@@ -5,16 +5,56 @@ from keyboardConfirmation import getConfirmation
 from keyboardActionChoice import getAction
 from authenticate import authenticate
 from instructionsPage import showInstructions
+from screenshot import getCurrentDateAndTime
+
+def logTransaction(type, currentUserName = "", curr_ac_no = "", amount = "", recipientName = "", recipient_ac_no = ""):
+
+    currentDate, currentTime = getCurrentDateAndTime()
+    fileName = str(currentDate) + ".txt"
+
+    if(type == "transfer"):
+        transactionDetails = currentUserName + " (" + curr_ac_no + ") transferred Rs. " + amount + " to " + recipientName \
+                             + " (" + recipient_ac_no + ") at " + str(currentTime)
+    else: #withdraw
+        transactionDetails = currentUserName + " (" + curr_ac_no + ") withdrew Rs. " + amount + " at " + str(currentTime)
+
+    with open(fileName, "a+") as f:
+        f.seek(0)
+        data = f.read(100)
+        if len(data) > 0:
+            f.write("\n")
+        f.write(transactionDetails)
+
+def getAccountDetails(account_no):
+    ac_no = int(account_no)
+    data = pd.read_csv('atmData.csv')
+    person = data[data['ac'] == ac_no]
+    name = str(person['name'].values[0])
+    account_type = str(person['account_type'].values[0])
+
+    return ac_no, name, account_type
+
+def selectAccountType(actual_account_type):
+    choice = getConfirmation("account-type")
+    if (choice == "choice1"):
+        selected_account_type = "savings"
+    else:
+        selected_account_type = "current"
+
+    while (selected_account_type != actual_account_type):
+        choice = getConfirmation("retry-account-type")
+        if (choice == "choice1"):
+            selected_account_type = "savings"
+        else:
+            selected_account_type = "current"
 
 def runActions(authResult):
 
-    ac_no = int(authResult)
+    ac_no, name, account_type = getAccountDetails(authResult)
     data = pd.read_csv('atmData.csv')
     person = data[data['ac'] == ac_no]
-    print(person)
-    name = str(person['name'].values[0])
-    action = getAction()
 
+    action = getAction()
     actionConfirmation = getConfirmation(action + "-action")
     while (actionConfirmation != "choice1"):
         action = getAction()
@@ -33,11 +73,11 @@ def runActions(authResult):
             data.loc[data['ac'] == ac_no, 'balance'] = newBalance
             data.to_csv('atmData.csv', index=False)
 
+            logTransaction("withdraw", name, str(ac_no), str(amount))
             runCATM("Successfully withdrawn", authResult)
         else:
             runCATM("Transaction cancelled", authResult)
 
-    # runCATM("Successfull")
 
     elif (action == "balance"):
         balance = person['balance']
@@ -47,20 +87,20 @@ def runActions(authResult):
     elif (action == "transfer"):
 
         data = pd.read_csv('atmData.csv')
-        transfer_to = getNumber("Enter A/C no of recipient")
-        recipient = data[data['ac'] == int(transfer_to)]
+        rec_ac_no = getNumber("Enter A/C no of recipient")
+        recipient = data[data['ac'] == int(rec_ac_no)]
 
-        while (len(recipient) == 0 or len(transfer_to) < 6):
-            transfer_to = getNumber("Invalid recipient, try again.")
-            recipient = data[data['ac'] == int(transfer_to)]
+        while (len(recipient) == 0 or len(rec_ac_no) < 6):
+            rec_ac_no = getNumber("Invalid recipient, try again.")
+            recipient = data[data['ac'] == int(rec_ac_no)]
 
-        while (int(transfer_to) == ac_no):
-            transfer_to = getNumber("Can't transfer to own account")
-            recipient = data[data['ac'] == int(transfer_to)]
+        while (int(rec_ac_no) == ac_no):
+            rec_ac_no = getNumber("Can't transfer to own account")
+            recipient = data[data['ac'] == int(rec_ac_no)]
 
         currUserBalance = int(person['balance'])
 
-        amount = int(getNumber("Enter amount to tranfer"))
+        amount = int(getNumber("Enter amount to transfer"))
         while (amount > currUserBalance):
             amount = int(getNumber("Not enough money, enter again"))
 
@@ -76,9 +116,10 @@ def runActions(authResult):
             currUserBalance = currUserBalance - amount
             recipientBalance = recipientBalance + amount
             data.loc[data['ac'] == ac_no, 'balance'] = currUserBalance
-            data.loc[data['ac'] == int(transfer_to), 'balance'] = recipientBalance
+            data.loc[data['ac'] == int(rec_ac_no), 'balance'] = recipientBalance
             data.to_csv('atmData.csv', index=False)
 
+            logTransaction("transfer", name, str(ac_no), str(amount), recipientName, rec_ac_no)
             runCATM("Successfully Transferred", authResult)
         else:
             runCATM("Transaction cancelled", authResult)
@@ -93,7 +134,7 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
 
         if(accountNo == ""):
             loggedIn = False
-            # showInstructions()
+            showInstructions(30)
         else:
             loggedIn = True
 
@@ -107,8 +148,8 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
                 runActions(accountNo)
 
             authResult = authenticate()
-            # authenticationResult = authResult
-            ac_no = int(authResult)
+            ac_no, name, actual_account_type = getAccountDetails(authResult)
+            selectAccountType(actual_account_type)
             runActions(authResult)
 
     except Exception as e:
@@ -139,3 +180,4 @@ except Exception as e:
 #     authenticate()
 # except Exception as e:
 #     print(e)
+

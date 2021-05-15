@@ -1,7 +1,7 @@
-ac,pin,name,balance
-123456,1234, Shubham,122164
-123543,4231, Sudhanshu,5325
-453674,3693, Sankalp,12324
-543858,9506, Jashan,1000
-659062,4325, Chirag,2000
-104324,5452, Kashish,2000060
+ac,pin,name,balance,account_type
+123456,1234,Shubham,122141,savings
+123543,4231,Sudhanshu,5329,current
+453674,3693,Sankalp,12324,current
+543858,9506,Jashan,1000,savings
+659062,4325,Chirag,2000,current
+104324,5452,Kashish,2000060,current

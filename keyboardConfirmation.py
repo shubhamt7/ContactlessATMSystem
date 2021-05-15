@@ -53,6 +53,17 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
         cv2.putText(frame, "CONFIRM", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
         cv2.putText(frame, "CANCEL", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
 
+    elif type == "account-type" or type == "retry-account-type":
+        if(type == "account-type"):
+            message = "Select your account type"
+        else:
+            message = "Wrong account type, select again"
+
+        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
+        cv2.putText(frame, message, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, "Savings A/C", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 0.8, green, 1)
+        cv2.putText(frame, "Current A/C", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+
     # action confirmation
     else:
         cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
@@ -72,8 +83,6 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
         cv2.putText(frame, "CONTINUE", (110, 330), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
         cv2.putText(frame, "CHANGE", (370, 320), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
         cv2.putText(frame, "ACTION", (370, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
-
-
 
 def getConfirmation(type, name = "",amount = "", balance = "", recipient = ""):
     cap = cv2.VideoCapture(0)

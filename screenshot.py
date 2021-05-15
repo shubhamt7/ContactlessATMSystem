@@ -4,11 +4,16 @@ from datetime import date
 import cv2
 import numpy as np
 
-def clickScreenshot(name = "", ac = ""):
-
+def getCurrentDateAndTime():
     t = time.localtime()
     currentTime = time.strftime("%H_%M_%S", t)
     currentDate = date.today().strftime("%d_%m_%y")
+
+    return currentDate, currentTime
+
+def clickScreenshot(name = "", ac = ""):
+
+    currentTime, currentDate = getCurrentDateAndTime()
     destination_dir = "/home/shubham/PycharmProjects/ContactlessATMSystem/images/"
 
     name = name.lower()

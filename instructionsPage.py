@@ -15,12 +15,12 @@ def timer(frame, t = 20):
     return "TIMEOUT"
 
 
-def showInstructions():
+def showInstructions(counterDuration):
 
     cap = cv2.VideoCapture(0)
     x = 20
     y = 80
-    counter = 30
+    counter = counterDuration
 
     prevTime = time.time()
     while counter > 0:
