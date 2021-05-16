@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from colors import red, green, white, black, lowerMaskColor, upperMaskColor
+from utility import CameraUtility
 
 
 def keyboardNumpadLayout(frame, message):
@@ -142,7 +143,7 @@ def determineNumpadKey(cx, cy):
 
 
 def getNumber(message=""):
-    cap = cv2.VideoCapture(0)
+    cap = CameraUtility.getInstance()
     count = 0
 
     result = ""
@@ -182,7 +183,9 @@ def getNumber(message=""):
                     count = 0
                     subs = determineNumpadKey(cx, cy)
                     if(subs == "quit"):
-                        exit(0)
+                        cap.release()
+                        cv2.destroyAllWindows()
+                        break
                     elif (subs == ""):
                         pass
                     elif subs == "backspace":
@@ -204,10 +207,9 @@ def getNumber(message=""):
         keyboardNumpadLayout(frame, message)
         cv2.imshow('Contactless ATM System', frame)
         if cv2.waitKey(1) == 27:
+            cap.release()
+            cv2.destroyAllWindows()
             break
-
-    cap.release()
-    cv2.destroyAllWindows()
 
     return result
 

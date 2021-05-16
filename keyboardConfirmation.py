@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 
 from colors import red, green, white, black, lowerMaskColor, upperMaskColor
+from utility import CameraUtility
 
 # black = (0, 0, 0)
 # white = (255, 255, 255)
@@ -85,7 +86,7 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
         cv2.putText(frame, "ACTION", (370, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
 
 def getConfirmation(type, name = "",amount = "", balance = "", recipient = ""):
-    cap = cv2.VideoCapture(0)
+    cap = CameraUtility.getInstance()
     count = 0
 
     result = ""
@@ -141,8 +142,8 @@ def getConfirmation(type, name = "",amount = "", balance = "", recipient = ""):
         cv2.imshow('Contactless ATM System', frame)
 
         if cv2.waitKey(1) == 27:
+            cap.release()
+            cv2.destroyAllWindows()
             break
 
-    cap.release()
-    cv2.destroyAllWindows()
     return result

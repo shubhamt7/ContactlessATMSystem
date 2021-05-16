@@ -10,7 +10,7 @@ def authenticate():
         ac = getNumber("Enter 6 digit Account number")
         user = data[data['ac'] == int(ac)]
 
-        while(len(user) == 0 or len(ac) < 6):
+        while(len(user) == 0 or len(ac) < 1):
             ac = getNumber("Wrong A/C No, Try again")
             user = data[data['ac'] == int(ac)]
 
@@ -18,7 +18,7 @@ def authenticate():
 
         pin = getNumber("Enter 4 digit PIN number")
 
-        while len(pin) != 4 or (int(pin) != correctPin):
+        while len(pin) != 4 or (int(pin) != correctPin ):
             pin = getNumber("Wrong PIN! Try again")
 
         name = str(user['name'].values[0])

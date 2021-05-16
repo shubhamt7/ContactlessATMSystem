@@ -14,7 +14,7 @@ def getCurrentDateAndTime():
 def clickScreenshot(name = "", ac = ""):
 
     currentTime, currentDate = getCurrentDateAndTime()
-    destination_dir = "/home/shubham/PycharmProjects/ContactlessATMSystem/images/"
+    destination_dir = "./images/"
 
     name = name.lower()
     name = name.replace(" ", "")

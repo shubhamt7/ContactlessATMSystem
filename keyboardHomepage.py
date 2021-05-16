@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
+import time
 
 from colors import red, green, white, black, lowerMaskColor, upperMaskColor
+from utility import Fade, CameraUtility
 
 def keyboardHomepageLayout(frame, message, loggedIn, fontSize):
 
@@ -38,10 +40,10 @@ def determineKey(cx, cy):
 
 def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
 
-    cap = cv2.VideoCapture(0)
+    cap = CameraUtility.getInstance()
     count = 0
     result = ""
-
+    fade = True
     while (1):
 
         ret, frame = cap.read()
@@ -51,9 +53,6 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
         global cy
 
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-        low_red = np.array([161, 155, 84])
-        high_red = np.array([179, 255, 255])
 
         mask = cv2.inRange(hsv, lowerMaskColor, upperMaskColor)
         blur = cv2.medianBlur(mask, 15)
@@ -86,12 +85,18 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
                         break
 
         keyboardHomepageLayout(frame, message, loggedIn, fontSize)
-        cv2.imshow('Contactless ATM System', frame)
+        if fade:
+            Fade.fadeIn(frame)
+            fade = False
+        else:
+            cv2.imshow('Contactless ATM System', frame)
+
         if cv2.waitKey(1) == 27:
+            cap.release()
+            cv2.destroyAllWindows()
             break
 
-    cap.release()
-    cv2.destroyAllWindows()
+
     return result
 
 

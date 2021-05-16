@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from colors import red, green, white, black, blue, yellow, cyanBlue, cyanGreen, cyanRed, mint, lightBlue
 
+from utility import Fade
 
 def timer(frame, t=20):
     while t:
@@ -78,6 +79,7 @@ def showInstructions(counterDuration):
         cv2.imshow('Contactless ATM System', frame)
 
         if cv2.waitKey(1) == 27:
-            break
-
-    cv2.destroyAllWindows()
+            cv2.destroyAllWindows()
+            return False
+    Fade.fadeOut(frame)
+    return True

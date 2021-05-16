@@ -6,6 +6,7 @@ from keyboardActionChoice import getAction
 from authenticate import authenticate
 from instructionsPage import showInstructions
 from screenshot import getCurrentDateAndTime
+from utility import CameraUtility
 
 def logTransaction(type, currentUserName = "", curr_ac_no = "", amount = "", recipientName = "", recipient_ac_no = ""):
 
@@ -131,10 +132,14 @@ def runActions(authResult):
 
 def runCATM(message="", accountNo = "", fontSize = 1.2):
     try:
-
+        print(1)
+        cap = CameraUtility.getInstance()
         if(accountNo == ""):
             loggedIn = False
-            showInstructions(2)
+            canContinue = showInstructions(2)
+            if canContinue == False:
+                cap.release()
+                return
         else:
             loggedIn = True
 

@@ -11,6 +11,7 @@ Actions:
 import cv2
 import numpy as np
 from colors import white, black, blue, lowerMaskColor, upperMaskColor
+from utility import CameraUtility
 
 
 def keyboardActionLayout(frame):
@@ -66,7 +67,7 @@ def determineAction(cx, cy):
 
 def getAction():
 
-    cap = cv2.VideoCapture(0)
+    cap = CameraUtility.getInstance()
     count = 0
 
     result = ""
@@ -112,10 +113,11 @@ def getAction():
         keyboardActionLayout(frame)
         cv2.imshow('Contactless ATM System', frame)
         if cv2.waitKey(1) == 27:
+            cap.release()
+            cv2.destroyAllWindows()
             break
 
-    cap.release()
-    cv2.destroyAllWindows()
+
     return result
 
 
