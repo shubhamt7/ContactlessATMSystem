@@ -1,6 +1,7 @@
 from colors import lowerMaskColor, upperMaskColor, white
 import cv2
 from screenshot import clickScreenshot
+from utility import CameraUtility, Fade
 
 def buildNumericString(subs, result):
     if (subs == "quit"):
@@ -25,8 +26,9 @@ def buildNumericString(subs, result):
 
 
 def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
-    cap = cv2.VideoCapture(0)
+    cap = CameraUtility.getInstance()
     count = 0
+    fade = True
 
     result = ""
     while (1):
@@ -91,16 +93,23 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
         else:
             keyboardLayout(frame)
 
-        cv2.imshow('Contactless ATM System', frame)
+        if fade:
+            Fade.fadeIn(frame)
+            fade = False
+        else:
+            cv2.imshow('Contactless ATM System', frame)
 
         if cv2.waitKey(1) == 27:
-            break
+            print("hello")
+            cap.release()
+            cv2.destroyAllWindows()
+            return result
 
     if(keyboardType == "numpad"):
         ac_no, _ = auxDetails
         if (ac_no != ""):
             clickScreenshot(ac_no)
 
-    cap.release()
-    cv2.destroyAllWindows()
+
+    Fade.fadeOut(frame)
     return result

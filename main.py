@@ -1,3 +1,4 @@
+import cv2
 import pandas as pd
 from keyboardNumpad import getNumber
 from keyboardHomepage import getHomepageKey
@@ -6,6 +7,7 @@ from keyboardActionChoice import getAction
 from authenticate import authenticate
 from instructionsPage import showInstructions
 from transactionLogging import logTransaction
+from utility import CameraUtility
 
 def getAccountDetails(account_no):
     ac_no = int(account_no)
@@ -120,9 +122,10 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
         cap = CameraUtility.getInstance()
         if(accountNo == ""):
             loggedIn = False
-            canContinue = showInstructions(2)
+            canContinue = showInstructions(5)
             if canContinue == False:
                 cap.release()
+                cv2.destroyAllWindows()
                 return
         else:
             loggedIn = True
