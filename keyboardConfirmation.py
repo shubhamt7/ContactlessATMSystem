@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from colors import red, green, white, black
+from colors import red, green, white, black, lowerMaskColor, upperMaskColor
 
 # black = (0, 0, 0)
 # white = (255, 255, 255)
@@ -108,10 +108,8 @@ def getConfirmation(type, name = "",amount = "", balance = "", recipient = ""):
         # global old_area, new_area
         # old_area, new_area = 0, 0
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        lower_yellow = np.array([14, 141, 140])
-        upper_yellow = np.array([84, 255, 255])
 
-        mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        mask = cv2.inRange(hsv, lowerMaskColor, upperMaskColor)
         blur = cv2.medianBlur(mask, 15)
         blur = cv2.GaussianBlur(blur, (5, 5), 0)
         thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
