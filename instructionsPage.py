@@ -4,6 +4,20 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from colors import red, green, white, black, blue, yellow, cyanBlue, cyanGreen, cyanRed, mint, lightBlue
 
+from utility import Fade
+
+def timer(frame, t=20):
+    while t:
+        mins, secs = divmod(t, 60)
+        timer = '{:02d}:{:02d}'.format(mins, secs)
+        cv2.putText(frame, timer, (40, 450), cv2.FONT_HERSHEY_SIMPLEX, 0.8, red, 2)
+        print(timer, end="\r")
+        time.sleep(1)
+        t -= 1
+
+    return "TIMEOUT"
+
+
 def getHindiMessage(msg, frame, x, y, color):
     fontPath = "./akshar.ttf"
     font = ImageFont.truetype(fontPath, 30)
@@ -63,6 +77,7 @@ def showInstructions(counterDuration):
         cv2.imshow('Contactless ATM System', frame)
 
         if cv2.waitKey(1) == 27:
-            break
-
-    cv2.destroyAllWindows()
+            cv2.destroyAllWindows()
+            return False
+    Fade.fadeOut(frame)
+    return True

@@ -116,10 +116,14 @@ def runActions(authResult):
 
 def runCATM(message="", accountNo = "", fontSize = 1.2):
     try:
-
+        print(1)
+        cap = CameraUtility.getInstance()
         if(accountNo == ""):
             loggedIn = False
-            showInstructions(2)
+            canContinue = showInstructions(2)
+            if canContinue == False:
+                cap.release()
+                return
         else:
             loggedIn = True
 

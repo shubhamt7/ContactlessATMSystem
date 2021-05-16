@@ -4,6 +4,8 @@ from screenshot import clickScreenshot
 from colors import red, green, white, black, lowerMaskColor, upperMaskColor
 from objectDetection import buildNumericString
 from objectDetection import getInput
+from utility import CameraUtility
+
 
 def keyboardNumpadLayout(frame, message):
     x = 50

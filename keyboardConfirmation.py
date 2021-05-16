@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from objectDetection import getInput
 from colors import red, green, white, black, lowerMaskColor, upperMaskColor
+from utility import CameraUtility
 
 # black = (0, 0, 0)
 # white = (255, 255, 255)
