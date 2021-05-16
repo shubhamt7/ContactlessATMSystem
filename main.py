@@ -134,7 +134,7 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
 
         if(accountNo == ""):
             loggedIn = False
-            showInstructions(30)
+            showInstructions(50)
         else:
             loggedIn = True
 

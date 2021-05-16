@@ -51,10 +51,14 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
         global cy
 
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        lower_yellow = np.array([14, 141, 140])
-        upper_yellow = np.array([84, 255, 255])
+        # lower_yellow = np.array([14, 141, 140])
+        # upper_yellow = np.array([84, 255, 255])
 
-        mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        low_red = np.array([161, 155, 84])
+        high_red = np.array([179, 255, 255])
+
+        # mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        mask = cv2.inRange(hsv, low_red,high_red)
         blur = cv2.medianBlur(mask, 15)
         blur = cv2.GaussianBlur(blur, (5, 5), 0)
         thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -65,8 +69,8 @@ def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
 
         if len(contours) > 0:
             cnt = max(contours, key=cv2.contourArea)
-            if (cv2.contourArea(cnt) > 600 and cv2.contourArea(cnt) < 1200):
-
+            if (cv2.contourArea(cnt) > 100 and cv2.contourArea(cnt) < 1200):
+                print("hello")
                 M = cv2.moments(cnt)
 
                 cx = int(M['m10'] / M['m00'])
