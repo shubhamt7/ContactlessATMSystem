@@ -1,23 +1,8 @@
 import cv2
 import time
-
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
-
 from colors import red, green, white, black, blue, yellow, cyanBlue, cyanGreen, cyanRed, mint, lightBlue
-
-
-def timer(frame, t=20):
-    while t:
-        mins, secs = divmod(t, 60)
-        timer = '{:02d}:{:02d}'.format(mins, secs)
-        cv2.putText(frame, timer, (40, 450), cv2.FONT_HERSHEY_SIMPLEX, 0.8, red, 2)
-        print(timer, end="\r")
-        time.sleep(1)
-        t -= 1
-
-    return "TIMEOUT"
-
 
 def getHindiMessage(msg, frame, x, y, color):
     fontPath = "./akshar.ttf"

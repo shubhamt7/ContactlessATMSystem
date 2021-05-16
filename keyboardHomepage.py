@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+from objectDetection import getInput
 from colors import red, green, white, black, lowerMaskColor, upperMaskColor
 
 def keyboardHomepageLayout(frame, message, loggedIn, fontSize):
@@ -38,60 +39,7 @@ def determineKey(cx, cy):
 
 def getHomepageKey(message="", loggedIn = False, fontSize = 1.2):
 
-    cap = cv2.VideoCapture(0)
-    count = 0
-    result = ""
-
-    while (1):
-
-        ret, frame = cap.read()
-        frame = cv2.flip(frame, 1)
-
-        global cx
-        global cy
-
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-        low_red = np.array([161, 155, 84])
-        high_red = np.array([179, 255, 255])
-
-        mask = cv2.inRange(hsv, lowerMaskColor, upperMaskColor)
-        blur = cv2.medianBlur(mask, 15)
-        blur = cv2.GaussianBlur(blur, (5, 5), 0)
-        thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-        contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        cv2.drawContours(frame, contours, -1, (0, 255, 0), 2)
-
-        if len(contours) > 0:
-            cnt = max(contours, key=cv2.contourArea)
-            if (cv2.contourArea(cnt) > 100 and cv2.contourArea(cnt) < 1200):
-
-                M = cv2.moments(cnt)
-
-                cx = int(M['m10'] / M['m00'])
-                cy = int(M['m01'] / M['m00'])
-
-                cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
-
-                count = count + 1
-                if count == 20:
-                    count = 0
-                    subs = determineKey(cx, cy)
-                    if (subs == ""):
-                        pass
-                    else:
-                        result += subs
-                        break
-
-        keyboardHomepageLayout(frame, message, loggedIn, fontSize)
-        cv2.imshow('Contactless ATM System', frame)
-        if cv2.waitKey(1) == 27:
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
+    result = getInput(determineKey, keyboardHomepageLayout, "homepage", (message, loggedIn, fontSize))
     return result
 
 

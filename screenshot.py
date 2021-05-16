@@ -1,8 +1,12 @@
+import os
+
 import pyautogui
 import time
 from datetime import date
 import cv2
 import numpy as np
+import os.path as path
+from pathlib import Path
 
 def getCurrentDateAndTime():
     t = time.localtime()
@@ -11,20 +15,20 @@ def getCurrentDateAndTime():
 
     return currentDate, currentTime
 
-def clickScreenshot(name = "", ac = ""):
+def clickScreenshot(ac = ""):
 
-    currentTime, currentDate = getCurrentDateAndTime()
-    destination_dir = "/home/shubham/PycharmProjects/ContactlessATMSystem/images/"
+    currentDate, currentTime = getCurrentDateAndTime()
 
-    name = name.lower()
-    name = name.replace(" ", "")
+    current_dir = Path.cwd()
+    destination_dir = path.join(current_dir, "images", str(currentDate))
 
-    fileName = name + "_" + ac + "_date-" + str(currentDate) + "_time-" + str(currentTime) + '.png'
-    filePath = destination_dir + fileName
+    if(path.exists(destination_dir) == False):
+        os.mkdir(destination_dir)
+
+    fileName = ac + "_time-" + str(currentTime) + '.png'
+    filePath = path.join(destination_dir, fileName)
     image = pyautogui.screenshot(region=(60, 20, 650, 490))
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     cv2.imwrite(filePath, image)
 
-
-# clickScreenshot("Shubham Thind")
 

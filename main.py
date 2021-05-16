@@ -5,25 +5,7 @@ from keyboardConfirmation import getConfirmation
 from keyboardActionChoice import getAction
 from authenticate import authenticate
 from instructionsPage import showInstructions
-from screenshot import getCurrentDateAndTime
-
-def logTransaction(type, currentUserName = "", curr_ac_no = "", amount = "", recipientName = "", recipient_ac_no = ""):
-
-    currentDate, currentTime = getCurrentDateAndTime()
-    fileName = str(currentDate) + ".txt"
-
-    if(type == "transfer"):
-        transactionDetails = currentUserName + " (" + curr_ac_no + ") transferred Rs. " + amount + " to " + recipientName \
-                             + " (" + recipient_ac_no + ") at " + str(currentTime)
-    else: #withdraw
-        transactionDetails = currentUserName + " (" + curr_ac_no + ") withdrew Rs. " + amount + " at " + str(currentTime)
-
-    with open(fileName, "a+") as f:
-        f.seek(0)
-        data = f.read(100)
-        if len(data) > 0:
-            f.write("\n")
-        f.write(transactionDetails)
+from transactionLogging import logTransaction
 
 def getAccountDetails(account_no):
     ac_no = int(account_no)
@@ -66,6 +48,9 @@ def runActions(authResult):
 
         while (amount > balance):
             amount = int(getNumber("Not enough money, enter again"))
+
+        while (amount == 0):
+            amount = int(getNumber("Amount can't be zero"))
 
         confirmationMessage = getConfirmation("withdraw", name, amount, balance)
         if (confirmationMessage == "choice1"):

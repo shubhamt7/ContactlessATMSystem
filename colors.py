@@ -13,5 +13,10 @@ mint = (238,250,241)
 lightBlue = (158,123,45)
 
 #mask colors
-lowerMaskColor = np.array([161, 155, 84]) #np.array([14, 141, 140])
-upperMaskColor = np.array([179, 255, 255]) #np.array([84, 255, 255])
+#red
+# lowerMaskColor = np.array([161, 155, 84])
+# upperMaskColor = np.array([179, 255, 255])
+
+#yellow
+lowerMaskColor = np.array([14, 141, 140])
+upperMaskColor = np.array([84, 255, 255])
