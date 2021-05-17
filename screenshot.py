@@ -32,7 +32,7 @@ def clickScreenshot(ac = ""):
     y = windowRect[1]
     w = windowRect[2]
     h = windowRect[3]
-    image = pyautogui.screenshot(region=(x,y,w,h))
+    image = pyautogui.screenshot(region=(x,y,w,h-80))
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     cv2.imwrite(filePath, image)
 
