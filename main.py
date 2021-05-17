@@ -120,6 +120,10 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
     try:
 
         cap = CameraUtility.getInstance()
+        cap.read()
+        cv2.namedWindow('Contactless ATM System', cv2.WND_PROP_FULLSCREEN)
+        cv2.setWindowProperty('Contactless ATM System', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
         if(accountNo == ""):
             loggedIn = False
             canContinue = showInstructions(5)

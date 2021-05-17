@@ -30,6 +30,7 @@ def keyboardHomepageLayout(frame, message, loggedIn, fontSize):
 def determineKey(cx, cy):
     if cy > 250 and cy < 400:
         if cx > 90 and cx < 290:
+
             return "enter"
         elif cx > 340 and cx < 540:
             return "exit"

@@ -1,6 +1,7 @@
 import cv2
+import numpy
 import numpy as np
-from colors import black
+from colors import black, lightBlue
 import time
 
 class CameraUtility:
@@ -46,4 +47,17 @@ class Fade:
         img2 = np.array([[black for x in range(w)] for y in range(h)], dtype="uint8")
         Fade.fade(img1, img2)
         return
+
+    # @staticmethod
+    # def buttonPressedAnimation(img,x1,y1,x2,y2):
+    #     print("button")
+    #     newFrame = numpy.copy(img)
+    #     cv2.rectangle(newFrame, (x1, y1), (x2, y2), lightBlue, -1)
+    #     cv2.imshow('Contactless ATM System',newFrame)
+    #     print("test")
+    #     time.sleep(5)
+    #     # Fade.fade(img,newFrame)
+    #     # Fade.fade(newFrame,img)
+    #
+    #     return  # exit function
 
