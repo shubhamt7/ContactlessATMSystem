@@ -27,7 +27,12 @@ def clickScreenshot(ac = ""):
 
     fileName = ac + "_time-" + str(currentTime) + '.png'
     filePath = path.join(destination_dir, fileName)
-    image = pyautogui.screenshot(region=(60, 20, 650, 490))
+    windowRect = cv2.getWindowImageRect('Contactless ATM System')
+    x = windowRect[0]
+    y = windowRect[1]
+    w = windowRect[2]
+    h = windowRect[3]
+    image = pyautogui.screenshot(region=(x,y,w,h))
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     cv2.imwrite(filePath, image)
 

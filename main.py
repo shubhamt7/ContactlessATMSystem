@@ -118,7 +118,7 @@ def runActions(authResult):
 
 def runCATM(message="", accountNo = "", fontSize = 1.2):
     try:
-        print(1)
+
         cap = CameraUtility.getInstance()
         if(accountNo == ""):
             loggedIn = False

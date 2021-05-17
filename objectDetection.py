@@ -56,7 +56,7 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
 
         if len(contours) > 0:
             cnt = max(contours, key=cv2.contourArea)
-            if (cv2.contourArea(cnt) > 600 and cv2.contourArea(cnt) < 1200):
+            if (cv2.contourArea(cnt) > 100 and cv2.contourArea(cnt) < 1200):
 
                 M = cv2.moments(cnt)
 
