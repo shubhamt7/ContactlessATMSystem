@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from objectDetection import getInput
 from colors import red, green, white, black, lowerMaskColor, upperMaskColor
-from utility import CameraUtility
+from utility import CameraUtility, getHindiMessage
 
 # black = (0, 0, 0)
 # white = (255, 255, 255)
@@ -34,9 +34,9 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
     x = 20
     y = 50
     message1 = ""
+    cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
 
     if type == "withdraw":
-        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
         message1 = "Hello " + name + "!, " + "You are about"
         message2 = "to withdraw " + str(amount) + " out of " + str(balance)
         cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
@@ -44,8 +44,18 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
         cv2.putText(frame, "CONFIRM", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
         cv2.putText(frame, "CANCEL", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
+    elif type == "language":
+        message1 = "Please select your language"
+        message2 = "कृपया अपनी भाषा चुनें"
+        hindiChoice = "हिंदी"
+
+        cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+        cv2.putText(frame, "ENGLISH", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
+        frame = getHindiMessage(msg=message2, frame=frame, x=50, y=130, color=white)
+        frame = getHindiMessage(msg=hindiChoice, frame=frame, x=420, y=310, color=white)
+        return frame
+
     elif type == "transfer":
-        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
         message1 = "Hello " + name + "!, " + "You are about"
         message2 = "to transfer " + str(amount) + " out of " + str(balance)
         message3 = "to " + recipient
@@ -61,14 +71,12 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
         else:
             message = "Wrong account type, select again"
 
-        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
         cv2.putText(frame, message, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
         cv2.putText(frame, "Savings A/C", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 0.8, green, 1)
         cv2.putText(frame, "Current A/C", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
     # action confirmation
     else:
-        cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
         if type == "withdraw-action":
             message1 = "Continue with withdrawing money"
         elif type == "transfer-action":
@@ -86,6 +94,7 @@ def displayDetails(frame, type, name = "", amount = "", balance = "", recipient 
         cv2.putText(frame, "CHANGE", (370, 320), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
         cv2.putText(frame, "ACTION", (370, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
 
+        return ""
 
 def getConfirmation(type, name = "",amount = "", balance = "", recipient = ""):
 

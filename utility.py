@@ -3,6 +3,16 @@ import numpy
 import numpy as np
 from colors import black, lightBlue
 import time
+from PIL import Image, ImageDraw, ImageFont
+
+def getHindiMessage(msg, frame, x, y, color):
+    fontPath = "./akshar.ttf"
+    font = ImageFont.truetype(fontPath, 30)
+    imgPIL = Image.fromarray(frame)
+    draw = ImageDraw.Draw(imgPIL)
+    draw.text((x, y), msg, font=font, fill=color)
+    frame = np.array(imgPIL)
+    return frame
 
 class CameraUtility:
     cameraInstance = None

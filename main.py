@@ -10,7 +10,7 @@ from transactionLogging import logTransaction
 from utility import CameraUtility
 
 def getAccountDetails(account_no):
-    ac_no = int(account_no)
+    ac_no = int(str(account_no))
     data = pd.read_csv('atmData.csv')
     person = data[data['ac'] == ac_no]
     name = str(person['name'].values[0])
@@ -40,6 +40,7 @@ def runActions(authResult):
 
     action = getAction()
     actionConfirmation = getConfirmation(action + "-action")
+
     while (actionConfirmation != "choice1"):
         action = getAction()
         actionConfirmation = getConfirmation(action + "-action")
@@ -55,11 +56,12 @@ def runActions(authResult):
             amount = int(getNumber("Amount can't be zero"))
 
         confirmationMessage = getConfirmation("withdraw", name, amount, balance)
+        print(confirmationMessage)
+
         if (confirmationMessage == "choice1"):
             newBalance = balance - amount
             data.loc[data['ac'] == ac_no, 'balance'] = newBalance
             data.to_csv('atmData.csv', index=False)
-
             logTransaction("withdraw", name, str(ac_no), str(amount))
             runCATM("Successfully withdrawn", authResult)
         else:
@@ -126,7 +128,18 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
 
         if(accountNo == ""):
             loggedIn = False
-            canContinue = showInstructions(5)
+            languageInput = getConfirmation("language")
+
+            if(languageInput == "choice1"):
+                language = "english"
+            elif(languageInput == "choice2"):
+                language = "hindi"
+            else:
+                exit(0)
+
+            print(language)
+            canContinue = showInstructions(2, language)
+
             if canContinue == False:
                 cap.release()
                 cv2.destroyAllWindows()

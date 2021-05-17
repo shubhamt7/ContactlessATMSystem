@@ -41,7 +41,11 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
 
         if(keyboardType == "confirmation"):
             type, name, amount, balance, recipient, displayDetails = auxDetails
-            displayDetails(frame, type, name, amount, balance, recipient)
+            if(type == "language"):
+                modifiedFrame = displayDetails(frame, type, name, amount, balance, recipient)
+                frame = modifiedFrame
+            else:
+                displayDetails(frame, type, name, amount, balance, recipient)
 
         global cx
         global cy
@@ -56,25 +60,28 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
 
         if len(contours) > 0:
             cnt = max(contours, key=cv2.contourArea)
-            if (cv2.contourArea(cnt) > 100 and cv2.contourArea(cnt) < 1200):
+            if (cv2.contourArea(cnt) > 500 and cv2.contourArea(cnt) < 1200):
 
                 M = cv2.moments(cnt)
 
                 cx = int(M['m10'] / M['m00'])
                 cy = int(M['m01'] / M['m00'])
-                cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 2)
+
+                cv2.circle(frame, (cx, cy), 1, (0, 0, 255), 20)
 
                 count = count + 1
                 if count == 20:
                     count = 0
 
                     subs = determineKey(cx, cy)
+
                     if(keyboardType == "numpad"):
                         result, status = buildNumericString(subs, result)
                         if (status == "break"):
                             break
                         elif (status == "exit"):
                             exit(0)
+
                     else:
                         if (subs == ""):
                             pass
@@ -100,7 +107,7 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
             cv2.imshow('Contactless ATM System', frame)
 
         if cv2.waitKey(1) == 27:
-            print("hello")
+            # print("hello")
             cap.release()
             cv2.destroyAllWindows()
             return result
@@ -111,5 +118,5 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
             clickScreenshot(ac_no)
 
 
-    Fade.fadeOut(frame)
+    # Fade.fadeOut(frame)
     return result
