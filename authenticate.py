@@ -3,22 +3,22 @@ import cv2
 from keyboardNumpad import getNumber
 
 # Authentication
-def authenticate():
+def authenticate(language):
     try:
         data = pd.read_csv('atmData.csv')
-        ac = getNumber("Enter 6 digit Account number")
+        ac = getNumber(language, "enter-ac-no")
         user = data[data['ac'] == int(ac)]
 
         while(len(user) == 0 or len(ac) < 1):
-            ac = getNumber("Wrong A/C No, Try again")
+            ac = getNumber(language, "wrong-ac")
             user = data[data['ac'] == int(ac)]
 
         correctPin = int(user['pin'])
 
-        pin = getNumber("Enter 4 digit PIN number", ac)
+        pin = getNumber(language, "enter-pin", ac)
 
         while len(pin) != 4 or (int(pin) != correctPin ):
-            pin = getNumber("Wrong PIN! Try again")
+            pin = getNumber(language, "wrong-pin")
 
         name = str(user['name'].values[0])
         return ac  # ok

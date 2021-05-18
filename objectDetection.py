@@ -1,4 +1,4 @@
-from colors import lowerMaskColor, upperMaskColor, white
+from colors import lowerMaskColor, upperMaskColor, white, blue
 import cv2
 from screenshot import clickScreenshot
 from utility import CameraUtility, Fade
@@ -37,15 +37,16 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
         frame = cv2.flip(frame, 1)
 
         if(keyboardType == "numpad"):
-            cv2.putText(frame, "You entered: " + result, (55, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+            cv2.putText(frame, "=> " , (55, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, blue, 2)
+            cv2.putText(frame, result, (110, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
 
         if(keyboardType == "confirmation"):
-            type, name, amount, balance, recipient, displayDetails = auxDetails
+            language, type, name, amount, balance, recipient, displayDetails = auxDetails
             if(type == "language"):
-                modifiedFrame = displayDetails(frame, type, name, amount, balance, recipient)
+                modifiedFrame = displayDetails(frame, "", type, name, amount, balance, recipient)
                 frame = modifiedFrame
             else:
-                displayDetails(frame, type, name, amount, balance, recipient)
+                frame = displayDetails(frame, language, type, name, amount, balance, recipient)
 
         global cx
         global cy
@@ -90,15 +91,16 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
                             break
 
         if(keyboardType == "homepage"):
-            message, loggedIn, fontSize = auxDetails
-            keyboardLayout(frame, message, loggedIn, fontSize)
+            language, message, loggedIn, fontSize = auxDetails
+            frame = keyboardLayout(frame, language, message, loggedIn, fontSize)
         elif(keyboardType == "confirmation"):
             keyboardLayout(frame)
         elif(keyboardType == "numpad"):
-            _, message = auxDetails
-            keyboardLayout(frame, message)
+            language, _, message = auxDetails
+            frame = keyboardLayout(frame, language, message)
         else:
-            keyboardLayout(frame)
+            language = auxDetails
+            frame = keyboardLayout(frame, language)
 
         if fade:
             Fade.fadeIn(frame)
@@ -113,7 +115,7 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
             return result
 
     if(keyboardType == "numpad"):
-        ac_no, _ = auxDetails
+        language, ac_no, _ = auxDetails
         if (ac_no != ""):
             clickScreenshot(ac_no)
 

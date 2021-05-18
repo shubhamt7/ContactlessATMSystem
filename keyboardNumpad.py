@@ -1,18 +1,67 @@
 import cv2
-import numpy as np
-from screenshot import clickScreenshot
-from colors import red, green, white, black, lowerMaskColor, upperMaskColor
-from objectDetection import buildNumericString
+from colors import red, green, white, black, blue
 from objectDetection import getInput
-from utility import CameraUtility
+from utility import getHindiMessage
 
 
-def keyboardNumpadLayout(frame, message):
+def keyboardNumpadLayout(frame, language, message):
     x = 50
     y = 60
 
     cv2.rectangle(frame, (x, 10), (x + 480, 50), black, 2)
-    cv2.putText(frame, message, (52, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
+    fontSize = 0.8
+
+    if(language == "english"):
+        if(message == "enter-ac-no"):
+            cv2.putText(frame, "Enter your account number", (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif (message == "wrong-ac"):
+            cv2.putText(frame, "Wrong A/C number, try again",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "enter-pin"):
+            cv2.putText(frame, "Enter your PIN",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "wrong-pin"):
+            cv2.putText(frame, "Wrong pin, try again",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "enter-amount"):
+            cv2.putText(frame, "Enter amount",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "not-enough-balance"):
+            cv2.putText(frame, "Not enough balance, try again",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "zero-amount"):
+            cv2.putText(frame, "Amount cannot be zero",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "invalid-recipient"):
+            cv2.putText(frame, "Invalid recipient, enter again",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "self-transfer"):
+            cv2.putText(frame, "Cannot transfer to self account",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif(message == "enter-recipient"):
+            cv2.putText(frame, "Enter A/C no. of recipient",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif (message == "invalid-denomination"):
+            cv2.putText(frame, "Enter in 100s/500s/2000s",  (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+
+    elif (language == "hindi"):
+        if (message == "enter-ac-no"):
+            frame = getHindiMessage(msg="अपना खाता नंबर दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "wrong-ac"):
+            frame = getHindiMessage(msg="गलत नंबर, फिर से दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "enter-pin"):
+            frame = getHindiMessage(msg="अपना पिन दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "wrong-pin"):
+            frame = getHindiMessage(msg="गलत पिन, फिर से दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "enter-amount"):
+            frame = getHindiMessage(msg="राशि दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "not-enough-balance"):
+            frame = getHindiMessage(msg="अपर्याप्त राशि, फिर से दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "zero-amount"):
+            frame = getHindiMessage(msg="राशि शून्य नहीं हो सकती", frame=frame, x=60, y=10, color=white)
+        elif (message == "invalid-recipient"):
+            frame = getHindiMessage(msg="अमान्य प्राप्तकर्ता, फिर से दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "self-transfer"):
+            frame = getHindiMessage(msg="स्वयं को ट्रांसफर नहीं कर सकते", frame=frame, x=60, y=10, color=white)
+        elif (message == "enter-recipient"):
+            frame = getHindiMessage(msg="प्राप्तकर्ता का खाता संख्या दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif (message == "invalid-denomination"):
+            frame = getHindiMessage(msg="कृपया 100/500/2000 के मूल्यवर्ग में दर्ज करें", frame=frame, x=60, y=10, color=white)
+
+    else:
+        exit(0)
+
     cv2.rectangle(frame, (x, y), (x + 480, y + 400), black, 2)
 
     # 1, 2, 3
@@ -50,7 +99,11 @@ def keyboardNumpadLayout(frame, message):
     x += 120
 
     cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
-    cv2.putText(frame, "DEL", (x + 30, y + 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, red, 2)
+    if(language == "english"):
+        cv2.putText(frame, "DEL", (x + 30, y + 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, red, 2)
+    elif(language == "hindi"):
+        frame = getHindiMessage(msg="मिटाएं", frame=frame, x=x + 30, y=y + 40, color=red)
+
     x += 120
 
     # 7, 8, 9
@@ -69,13 +122,18 @@ def keyboardNumpadLayout(frame, message):
     x += 120
 
     cv2.rectangle(frame, (x, y), (x + 120, y + 120), black, 2)
-    cv2.putText(frame, "ENTER", (x + 20, y + 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, green, 2)
+    if(language == "english"):
+        cv2.putText(frame, "ENTER", (x + 20, y + 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, green, 2)
+    elif(language == "hindi"):
+        frame = getHindiMessage(msg="दर्ज करें", frame=frame, x=x + 20, y=y + 40, color=blue)
 
     x = 550
     y = 0
 
     cv2.rectangle(frame, (x, y), (x + 80, y + 50), (0, 0, 255), 2)
-    cv2.putText(frame, "Quit", (x + 10, y + 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    cv2.putText(frame, " X ", (x + 12, y + 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+    return frame
 
 
 def determineNumpadKey(cx, cy):
@@ -145,8 +203,8 @@ def determineNumpadKey(cx, cy):
         return ""
 
 
-def getNumber(message="", ac_no = ""):
+def getNumber(language, message="", ac_no=""):
 
-    result = getInput(determineNumpadKey, keyboardNumpadLayout, "numpad", (str(ac_no), message))
+    result = getInput(determineNumpadKey, keyboardNumpadLayout, "numpad", (language, str(ac_no), message))
     return result
 

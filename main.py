@@ -18,44 +18,50 @@ def getAccountDetails(account_no):
 
     return ac_no, name, account_type
 
-def selectAccountType(actual_account_type):
-    choice = getConfirmation("account-type")
+def selectAccountType(language, actual_account_type):
+    choice = getConfirmation(language, "account-type")
     if (choice == "choice1"):
         selected_account_type = "savings"
     else:
         selected_account_type = "current"
 
     while (selected_account_type != actual_account_type):
-        choice = getConfirmation("retry-account-type")
+        choice = getConfirmation(language, "retry-account-type")
         if (choice == "choice1"):
             selected_account_type = "savings"
         else:
             selected_account_type = "current"
 
-def runActions(authResult):
+def runActions(language, authResult):
 
     ac_no, name, account_type = getAccountDetails(authResult)
     data = pd.read_csv('atmData.csv')
     person = data[data['ac'] == ac_no]
 
-    action = getAction()
-    actionConfirmation = getConfirmation(action + "-action")
+    action = getAction(language)
+    actionConfirmation = getConfirmation(language, action + "-action")
 
     while (actionConfirmation != "choice1"):
-        action = getAction()
-        actionConfirmation = getConfirmation(action + "-action")
+        action = getAction(language)
+        actionConfirmation = getConfirmation(language, action + "-action")
+
+
+    print(action)
 
     if (action == "withdraw"):
-        amount = int(getNumber("Enter amount to withdraw"))
+        amount = int(getNumber(language, "enter-amount"))
         balance = int(person['balance'])
 
         while (amount > balance):
-            amount = int(getNumber("Not enough money, enter again"))
+            amount = int(getNumber(language, "not-enough-balance"))
 
         while (amount == 0):
-            amount = int(getNumber("Amount can't be zero"))
+            amount = int(getNumber(language, "zero-amount"))
 
-        confirmationMessage = getConfirmation("withdraw", name, amount, balance)
+        while(amount < 100 or amount % 100 != 0):
+            amount = int(getNumber(language, "invalid-denomination"))
+
+        confirmationMessage = getConfirmation(language, "withdraw", name, amount, balance)
         print(confirmationMessage)
 
         if (confirmationMessage == "choice1"):
@@ -63,43 +69,48 @@ def runActions(authResult):
             data.loc[data['ac'] == ac_no, 'balance'] = newBalance
             data.to_csv('atmData.csv', index=False)
             logTransaction("withdraw", name, str(ac_no), str(amount))
-            runCATM("Successfully withdrawn", authResult)
+            runCATM("withdraw-success", authResult, language = language)
         else:
-            runCATM("Transaction cancelled", authResult)
+            runCATM("cancelled-txn", authResult, language = language)
 
 
     elif (action == "balance"):
         balance = person['balance']
-        runCATM("Your balance is: " + str(int(balance)), authResult)
+        if(language == "hindi"):
+            message = "प्रिय ग्राहक, आपके बैलेंस में " + str(int(balance)) + " रुपये बचे हैं"
+        else:
+            message = "Dear customer,your balance is Rs." + str(int(balance))
+
+        runCATM(message, authResult, language = language)
         # print(balance)
 
     elif (action == "transfer"):
 
         data = pd.read_csv('atmData.csv')
-        rec_ac_no = getNumber("Enter A/C no of recipient")
+        rec_ac_no = getNumber(language, "enter-recipient")
         recipient = data[data['ac'] == int(rec_ac_no)]
 
         while (len(recipient) == 0 or len(rec_ac_no) < 6):
-            rec_ac_no = getNumber("Invalid recipient, try again.")
+            rec_ac_no = getNumber(language, "invalid-recipient")
             recipient = data[data['ac'] == int(rec_ac_no)]
 
         while (int(rec_ac_no) == ac_no):
-            rec_ac_no = getNumber("Can't transfer to own account")
+            rec_ac_no = getNumber(language, "self-transfer")
             recipient = data[data['ac'] == int(rec_ac_no)]
 
         currUserBalance = int(person['balance'])
 
-        amount = int(getNumber("Enter amount to transfer"))
+        amount = int(getNumber(language, "enter-amount"))
         while (amount > currUserBalance):
-            amount = int(getNumber("Not enough money, enter again"))
+            amount = int(getNumber(language, "not-enough-money"))
 
         while (amount == 0):
-            amount = int(getNumber("Amount can't be zero"))
+            amount = int(getNumber(language, "zero-amount"))
 
         recipientBalance = int(recipient['balance'])
         recipientName = str(recipient['name'].values[0])
 
-        confirmationMessage = getConfirmation("transfer", name, amount, currUserBalance, recipientName)
+        confirmationMessage = getConfirmation(language, "transfer", name, amount, currUserBalance, rec_ac_no)
 
         if (confirmationMessage == "choice1"):
             currUserBalance = currUserBalance - amount
@@ -109,16 +120,15 @@ def runActions(authResult):
             data.to_csv('atmData.csv', index=False)
 
             logTransaction("transfer", name, str(ac_no), str(amount), recipientName, rec_ac_no)
-            runCATM("Successfully Transferred", authResult)
+            runCATM("transfer-success", authResult, language = language)
         else:
-            runCATM("Transaction cancelled", authResult)
+            runCATM("cancelled-txn", authResult, language = language)
 
     elif action == "cancel":
-        message = "Transaction cancelled"
-        runCATM(message, authResult)
+        runCATM("cancelled-txn", authResult, language = language)
 
 
-def runCATM(message="", accountNo = "", fontSize = 1.2):
+def runCATM(message="", accountNo = "", fontSize = 1.2, language = ""):
     try:
 
         cap = CameraUtility.getInstance()
@@ -128,7 +138,14 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
 
         if(accountNo == ""):
             loggedIn = False
-            languageInput = getConfirmation("language")
+
+            canContinue = showInstructions(1)
+            if canContinue == False:
+                cap.release()
+                cv2.destroyAllWindows()
+                return
+
+            languageInput = getConfirmation("", "language")
 
             if(languageInput == "choice1"):
                 language = "english"
@@ -138,34 +155,29 @@ def runCATM(message="", accountNo = "", fontSize = 1.2):
                 exit(0)
 
             print(language)
-            canContinue = showInstructions(2, language)
 
-            if canContinue == False:
-                cap.release()
-                cv2.destroyAllWindows()
-                return
         else:
             loggedIn = True
 
-        entryPageInput = getHomepageKey(message, loggedIn, fontSize)
+        entryPageInput = getHomepageKey(language, message, loggedIn, fontSize)
 
         if(entryPageInput == "exit"):
             exit(0)
 
         elif (entryPageInput == "enter"):
             if(accountNo != ""):
-                runActions(accountNo)
+                runActions(language, accountNo)
 
-            authResult = authenticate()
+            authResult = authenticate(language)
             ac_no, name, actual_account_type = getAccountDetails(authResult)
-            selectAccountType(actual_account_type)
-            runActions(authResult)
+            selectAccountType(language, actual_account_type)
+            runActions(language, authResult)
 
     except Exception as e:
         print(e)
 
 try:
-    runCATM("Welcome to Contactless ATM")
+    runCATM("welcome-message")
 except Exception as e:
     print(e)
 
