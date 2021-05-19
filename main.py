@@ -8,6 +8,7 @@ from authenticate import authenticate
 from instructionsPage import showInstructions
 from transactionLogging import logTransaction
 from utility import CameraUtility
+from welcomePage import showWelcomePage
 
 def getAccountDetails(account_no):
     ac_no = int(str(account_no))
@@ -139,7 +140,14 @@ def runCATM(message="", accountNo = "", fontSize = 1.2, language = ""):
         if(accountNo == ""):
             loggedIn = False
 
-            canContinue = showInstructions(1)
+            canContinueAfterWelcome = showWelcomePage(5)
+
+            if canContinueAfterWelcome == False:
+                cap.release()
+                cv2.destroyAllWindows()
+                return
+
+            canContinue = showInstructions(10)
             if canContinue == False:
                 cap.release()
                 cv2.destroyAllWindows()

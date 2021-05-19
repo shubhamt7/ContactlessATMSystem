@@ -40,7 +40,7 @@ def keyboardHomepageLayout(frame, language, message, loggedIn, fontSize):
         elif (message == "cancelled-txn"):
             message = "सफलतापूर्वक रद्द किया गया"
         elif(message == "welcome-message"):
-            message = "CATM में आपका स्वागत है!"
+            message = "संपर्क रहित एटीएम में आपका स्वागत है!"
         else:
             pass
     else:
