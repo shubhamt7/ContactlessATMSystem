@@ -1,23 +1,13 @@
 import cv2
 import time
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
-from colors import red, green, white, black, blue, yellow, cyanBlue, cyanGreen, cyanRed, mint, lightBlue, darkBlue
+from colors import red, white, black, mint, darkBlue
 from utility import getHindiMessage
 
 from utility import Fade
 
-def timer(frame, t=20):
-    while t:
-        mins, secs = divmod(t, 60)
-        timer = '{:02d}:{:02d}'.format(mins, secs)
-        cv2.putText(frame, timer, (40, 450), cv2.FONT_HERSHEY_SIMPLEX, 0.8, red, 2)
-        print(timer, end="\r")
-        time.sleep(1)
-        t -= 1
-
-    return "TIMEOUT"
-
+# Functions for displaying the usage instructions to the user
+# this function takes the number of seconds as arguments
 def showInstructions(counterDuration):
 
     x = 20
@@ -31,6 +21,8 @@ def showInstructions(counterDuration):
         frame = np.array([[darkBlue for x in range(650)] for y in range(500)],dtype="uint8")
         cv2.rectangle(frame, (x, 10), (x + 600, 80), black, 2)
         cv2.rectangle(frame, (x, y + 5), (x + 600, y + 350), black, 2)
+
+        #Displaying instructions in English
 
         instructionsMessageEnglish = "PLEASE READ THE INSTRUCTIONS CAREFULLY"
         engMessage1 = "1. You need a pointed object of yellow"
@@ -47,6 +39,7 @@ def showInstructions(counterDuration):
         cv2.putText(frame, "Loading CATM in: ", (100, 460), cv2.FONT_HERSHEY_SIMPLEX, 0.8, white, 1)
         cv2.putText(frame, "seconds", (365, 460), cv2.FONT_HERSHEY_SIMPLEX, 0.8, white, 1)
 
+        #Displaying instructions in Hindi
 
         instructionsMessageHindi = "कृपया निर्देशों को ध्यान से पढ़ें"
         hindiMessage1 = "1. इस मशीन को चलाने के लिए आपको पीले रंग की एक"
@@ -65,8 +58,8 @@ def showInstructions(counterDuration):
 
         cv2.putText(frame, str(counter), (330, 460), cv2.FONT_HERSHEY_SIMPLEX, 0.8, white, 2)
 
-
         currTime = time.time()
+        #checking whether the time has passed or not
         if (currTime - prevTime >= 1):
             prevTime = currTime
             counter = counter - 1

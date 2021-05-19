@@ -1,3 +1,7 @@
+"""
+All the colors used in UI are defined here
+"""
+
 import numpy as np
 
 black = (0, 0, 0)

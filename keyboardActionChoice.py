@@ -4,21 +4,21 @@ Keyboard for Selecting Action
 Actions:
 1. Withdrawing cash
 2. Checking account balance
-3. Cancelling the transaction
+3. Transferring money
+4. Cancelling the transaction
 
 """
 
 import cv2
 from objectDetection import getInput
-from colors import white, black, blue, lowerMaskColor, upperMaskColor
-from utility import CameraUtility, getHindiMessage
+from colors import white, black, blue
+from utility import getHindiMessage
 
 
 def keyboardActionLayout(frame, language):
 
     x = 120
     y = 130
-    green = (0, 255, 0)
 
     cv2.rectangle(frame, (110, 20), (530, 110), black, 2)
     cv2.rectangle(frame, (115, 25), (525, 105), blue, 2)
@@ -28,16 +28,15 @@ def keyboardActionLayout(frame, language):
     cv2.rectangle(frame, (x - 5, y - 5), (525, 435), blue, 2)
     choiceColor = blue
 
+    #Displaying action options in Hindi
     if(language == "hindi"):
         frame = getHindiMessage(msg="कृप्या कार्य चुनें", frame=frame, x=x+40, y =y-90, color=white)
 
         cv2.rectangle(frame, (x, y), (x + 200, y + 150), black, 2)
         frame = getHindiMessage(msg="नगद निकास करें", frame=frame, x=x + 20, y=y + 40, color=choiceColor)
-        # frame = getHindiMessage(msg="करें", frame=frame, x=x + 40, y=y + 70, color=choiceColor)
 
         cv2.rectangle(frame, (x + 200, y), (x + 400, y + 150), black, 2)
         frame = getHindiMessage(msg="बैलेंस चेक करें", frame=frame, x=x + 220, y=y + 40, color=choiceColor)
-        # frame = getHindiMessage(msg="करें", frame=frame, x=x + 240, y=y + 70, color=choiceColor)
 
         cv2.rectangle(frame, (x, y + 150), (x + 200, y + 300), black, 2)
         frame = getHindiMessage(msg="धनराशि का", frame=frame, x=x + 40, y=y + 190, color=choiceColor)
@@ -45,6 +44,8 @@ def keyboardActionLayout(frame, language):
 
         cv2.rectangle(frame, (x + 200, y + 150), (x + 400, y + 300), black, 2)
         frame = getHindiMessage(msg="रद्द करें", frame=frame, x=x + 270, y=y + 190, color=choiceColor)
+
+    #Displaying action options in English
 
     else:
         cv2.putText(frame, "CHOOSE AN ACTION", (x + 40, y - 55), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
@@ -66,6 +67,9 @@ def keyboardActionLayout(frame, language):
         cv2.putText(frame, "Transaction", (x + 220, y + 260), cv2.FONT_HERSHEY_SIMPLEX, 1, choiceColor, 2)
 
     return frame
+
+# this functions takes the coordinates of the pointer as arguments,
+# and returns the key which has to be pressed in response to that
 
 def determineAction(cx, cy):
 

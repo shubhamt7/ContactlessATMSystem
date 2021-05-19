@@ -1,8 +1,14 @@
+"""
+Code for authenticating a user before
+he is allowed to perform any other operations.
+
+The user is asked to enter account number and pin
+"""
+
+
 import pandas as pd
-import cv2
 from keyboardNumpad import getNumber
 
-# Authentication
 def authenticate(language):
     try:
         data = pd.read_csv('atmData.csv')
@@ -20,7 +26,6 @@ def authenticate(language):
         while len(pin) != 4 or (int(pin) != correctPin ):
             pin = getNumber(language, "wrong-pin")
 
-        name = str(user['name'].values[0])
         return ac  # ok
 
     except Exception as e:

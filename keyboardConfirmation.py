@@ -1,21 +1,23 @@
-import cv2
-import numpy as np
-from objectDetection import getInput
-from colors import red, green, white, black, lowerMaskColor, upperMaskColor
-from utility import CameraUtility, getHindiMessage
+"""
+This keyboard is used for behind all the screens where
+two options are shown to the user
+e.g. 1. Login and Exit
+     2. English and Hindi
+     3. Continue and Cancel, etc.
+"""
 
-# black = (0, 0, 0)
-# white = (255, 255, 255)
-# green = (0, 200, 0)
-# red = (0, 0, 200)
-# blue = (255, 0, 0)
+import cv2
+from objectDetection import getInput
+from colors import red, green, white, black
+from utility import getHindiMessage
+
 
 def keyboardConfirmationLayout(frame):
-
     x = 90
     y = 50
     cv2.rectangle(frame, (x, y + 200), (x + 200, y + 350), green, 2)
     cv2.rectangle(frame, (x + 250, y + 200), (x + 450, y + 350), red, 2)
+
 
 def determineConfirmationKey(cx, cy):
     if cy > 250 and cy < 400:
@@ -29,13 +31,14 @@ def determineConfirmationKey(cx, cy):
     else:
         return ""
 
-def displayDetails(frame, language, type, name = "", amount = "", balance = "", recipient = ""):
 
+def displayDetails(frame, language, type, name="", amount="", balance="", recipient=""):
     x = 20
     y = 50
     cv2.rectangle(frame, (x, y), (x + 600, y + 150), black, 2)
 
-    if(language == "english" or language == ""):
+    # Displaying messages if ENGLISH is the selected language
+    if language == "english" or language == "":
         message1 = ""
         if type == "withdraw":
             message1 = "Dear customer, you are about to"
@@ -67,7 +70,7 @@ def displayDetails(frame, language, type, name = "", amount = "", balance = "", 
             cv2.putText(frame, "CANCEL", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
 
         elif type == "account-type" or type == "retry-account-type":
-            if(type == "account-type"):
+            if type == "account-type":
                 message = "Select your account type"
             else:
                 message = "Wrong account type, select again"
@@ -76,7 +79,7 @@ def displayDetails(frame, language, type, name = "", amount = "", balance = "", 
             cv2.putText(frame, "Savings A/C", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 0.8, green, 1)
             cv2.putText(frame, "Current A/C", (360, 340), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
-        # action confirmation
+        # Messages for asking user to confirm action or change action
         else:
             if type == "withdraw-action":
                 message1 = "Continue withdrawing money"
@@ -95,7 +98,7 @@ def displayDetails(frame, language, type, name = "", amount = "", balance = "", 
             cv2.putText(frame, "CHANGE", (370, 320), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
             cv2.putText(frame, "ACTION", (370, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
 
-    #language = hindi
+    # Displaying messages if HINDI is the selected language
     else:
         message1 = ""
         if type == "withdraw":
@@ -107,11 +110,6 @@ def displayDetails(frame, language, type, name = "", amount = "", balance = "", 
             frame = getHindiMessage(msg=message2, frame=frame, x=50, y=130, color=white)
             frame = getHindiMessage(msg=message3, frame=frame, x=150, y=300, color=white)
             frame = getHindiMessage(msg=message4, frame=frame, x=390, y=300, color=red)
-
-            # cv2.putText(frame, message1, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
-            # cv2.putText(frame, message2, (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 1, white, 2)
-            # cv2.putText(frame, "CONFIRM", (120, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, green, 1)
-            # cv2.putText(frame, "CANCEL", (380, 340), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         elif type == "language":
             message1 = "Please select your language"
@@ -142,10 +140,10 @@ def displayDetails(frame, language, type, name = "", amount = "", balance = "", 
                 message = "गलत प्रकार चुना गया, पुनः प्रयास करें"
 
             frame = getHindiMessage(msg=message, frame=frame, x=50, y=100, color=white)
-            frame = getHindiMessage(msg="बचत खाता", frame=frame, x=120, y=300, color=white)
+            frame = getHindiMessage(msg="बचत खाता", frame=frame, x=135, y=300, color=white)
             frame = getHindiMessage(msg="चालू खाता", frame=frame, x=380, y=300, color=white)
 
-        # action confirmation
+        # Messages for asking user to confirm action or change action
         else:
             if type == "withdraw-action":
                 message1 = "पैसे निकालना जारी रखें"
@@ -159,14 +157,13 @@ def displayDetails(frame, language, type, name = "", amount = "", balance = "", 
             message2 = " या कोई अन्य कार्य करें"
 
             frame = getHindiMessage(msg=message1 + message2, frame=frame, x=50, y=110, color=white)
-            # frame = getHindiMessage(msg=message2, frame=frame, x=50, y=145, color=white)
-            frame = getHindiMessage(msg="जारी रखें", frame=frame, x=135, y=300, color=white)
+            frame = getHindiMessage(msg="जारी रखें", frame=frame, x=140, y=300, color=white)
             frame = getHindiMessage(msg="अन्य कार्य करें", frame=frame, x=370, y=300, color=white)
-            # frame = getHindiMessage(msg="करें", frame=frame, x=370, y=320, color=white)
 
     return frame
 
-def getConfirmation(language, type, name = "",amount = "", balance = "", recipient = ""):
 
-    result = getInput(determineConfirmationKey, keyboardConfirmationLayout, "confirmation", (language, type, name, amount, balance,recipient,displayDetails))
+def getConfirmation(language, type, name="", amount="", balance="", recipient=""):
+    result = getInput(determineConfirmationKey, keyboardConfirmationLayout, "confirmation",
+                      (language, type, name, amount, balance, recipient, displayDetails))
     return result
