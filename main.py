@@ -17,7 +17,7 @@ from instructionsPage import showInstructions
 from transactionLogging import logTransaction
 from utility import CameraUtility
 from welcomePage import showWelcomePage
-
+from faceDetection import detectFace
 
 # Function for getting account details of a person with the given account number
 def getAccountDetails(account_no):
@@ -144,18 +144,20 @@ def runActions(language, authResult):
         runCATM("cancelled-txn", authResult, language=language)
 
 
+
 def runCATM(message="", accountNo="", fontSize=1.2, language=""):
     try:
-
-        cap = CameraUtility.getInstance()
-        cap.read()
-        cv2.namedWindow('Contactless ATM System', cv2.WND_PROP_FULLSCREEN)
-        cv2.setWindowProperty('Contactless ATM System', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-
-
         #Checking whether user is authenticated or not
         if accountNo == "":
             loggedIn = False
+
+            isPerson = detectFace()
+            if not isPerson:
+                exit(0)
+            cap = CameraUtility.getInstance()
+            cap.read()
+            cv2.namedWindow('Contactless ATM System', cv2.WND_PROP_FULLSCREEN)
+            cv2.setWindowProperty('Contactless ATM System', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
             canContinueAfterWelcome = showWelcomePage(5)
 
