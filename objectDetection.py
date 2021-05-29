@@ -121,6 +121,7 @@ def getInput(determineKey, keyboardLayout, keyboardType, auxDetails = ()):
             fade = False
         else:
             cv2.imshow('Contactless ATM System', frame)
+            # cv2.imshow('Mask', mask)
 
         if cv2.waitKey(1) == 27:
             cap.release()

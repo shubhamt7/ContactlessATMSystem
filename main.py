@@ -166,7 +166,7 @@ def runCATM(message="", accountNo="", fontSize=1.2, language=""):
                 cv2.destroyAllWindows()
                 return
 
-            canContinue = showInstructions(10)
+            canContinue = showInstructions(15)
             if canContinue == False:
                 cap.release()
                 cv2.destroyAllWindows()

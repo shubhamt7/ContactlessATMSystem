@@ -21,10 +21,14 @@ def authenticate(language):
 
         correctPin = int(user['pin'])
 
+        counter = 3
         pin = getNumber(language, "enter-pin", ac)
 
         while len(pin) != 4 or (int(pin) != correctPin ):
-            pin = getNumber(language, "wrong-pin")
+            counter = counter - 1
+            if(counter == 0):
+                exit(0)
+            pin = getNumber(language, "wrong-pin-" + str(counter))
 
         return ac  # ok
 

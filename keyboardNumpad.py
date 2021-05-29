@@ -25,8 +25,10 @@ def keyboardNumpadLayout(frame, language, message):
             cv2.putText(frame, "Wrong A/C number, try again", (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
         elif message == "enter-pin":
             cv2.putText(frame, "Enter your PIN", (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
-        elif message == "wrong-pin":
-            cv2.putText(frame, "Wrong pin, try again", (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif message == "wrong-pin-2":
+            cv2.putText(frame, "Wrong pin, 2 attempts left", (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
+        elif message == "wrong-pin-1":
+            cv2.putText(frame, "Wrong pin, 1 attempt left", (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
         elif message == "enter-amount":
             cv2.putText(frame, "Enter amount", (62, 40), cv2.FONT_HERSHEY_SIMPLEX, fontSize, white, 2)
         elif message == "not-enough-balance":
@@ -52,8 +54,10 @@ def keyboardNumpadLayout(frame, language, message):
             frame = getHindiMessage(msg="गलत नंबर, फिर से दर्ज करें", frame=frame, x=60, y=10, color=white)
         elif message == "enter-pin":
             frame = getHindiMessage(msg="अपना पिन दर्ज करें", frame=frame, x=60, y=10, color=white)
-        elif message == "wrong-pin":
-            frame = getHindiMessage(msg="गलत पिन, फिर से दर्ज करें", frame=frame, x=60, y=10, color=white)
+        elif message == "wrong-pin-2":
+            frame = getHindiMessage(msg="गलत पिन, 2 प्रयास शेष", frame=frame, x=60, y=10, color=white)
+        elif message == "wrong-pin-1":
+            frame = getHindiMessage(msg="गलत पिन, 1 प्रयास शेष", frame=frame, x=60, y=10, color=white)
         elif message == "enter-amount":
             frame = getHindiMessage(msg="राशि दर्ज करें", frame=frame, x=60, y=10, color=white)
         elif message == "not-enough-balance":

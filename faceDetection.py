@@ -25,7 +25,7 @@ def detectFace():
             if (w > 150 and h > 150):
                 counter = counter + 1
                 cv2.rectangle(frame, (x, y), (x + w, y + h), blue, 2)
-                if(counter == 10):
+                if(counter == 20):
                     cap.release()
                     return True
 
