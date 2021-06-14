@@ -5,7 +5,7 @@
 
 * CATMS uses a virtual keyboard, which can be operated using a pointer of yellow color (any other color can also be specified).
 By pointer, we mean any small object, for example a pen-cap. ⌨
-* The coordinates of that pointer on the keyboard are computed using an opencv library, and corresponding keys are pressed (according to the position of the ,pointer on keyboard). 🌐
+* The coordinates of that pointer on the keyboard are computed using an opencv library, and corresponding keys are pressed (according to the position of the pointer on keyboard). 🌐
 * For increased security, an image of user is clicked and stored in the system when he attempts to log in. 📸
 
 
