@@ -12,7 +12,7 @@ By pointer, we mean any small object, for example a pen-cap. ⌨
 ## Why is it better than touch-based ATMs? 🙄🤔
  
 * It is more hygienic than the touch-based ATMs because we don't need to touch the screen 😎✔
-* It is the ATM of the future and it's cooler 😎🎉✌
+* It is the ATM of the future and it's cool 😎🎉✌
 
 ## Here's how it feels like to use the CATMS..
 
